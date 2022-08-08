@@ -1,0 +1,64 @@
+{
+  "boards": [
+    {
+      "id": 1,
+      "name": "Board 1"
+    },
+    {
+      "id": 2,
+      "name": "Board 2"
+    },
+    {
+      "id": 3,
+      "name": "Board 3"
+    }
+  ],
+  "columns": [
+    {
+      "id": 1,
+      "name": "Board 1 column 1",
+      "boardId": 1
+    },
+    {
+      "id": 2,
+      "name": "Board 1 column 2",
+      "boardId": 1
+    },
+    {
+      "id": 3,
+      "name": "Board 1 column 3",
+      "boardId": 1
+    },
+    {
+      "id": 4,
+      "name": "Board 1 column 4",
+      "boardId": 1
+    }
+  ],
+  "cards": [
+    {
+      "id": 1,
+      "name": "Card 1",
+      "body": "Card 1",
+      "columnId": 4
+    },
+    {
+      "id": 2,
+      "name": "Card 2",
+      "body": "Card 2 body",
+      "columnId": 1
+    },
+    {
+      "id": 3,
+      "name": "Card 3",
+      "body": "Card 3 body",
+      "columnId": 2
+    },
+    {
+      "id": 4,
+      "name": "Card 4",
+      "body": "Card 4",
+      "columnId": 1
+    }
+  ]
+}
