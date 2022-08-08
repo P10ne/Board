@@ -1,10 +1,11 @@
 import React from 'react';
 import classes from './App.module.scss';
+import { AppRouter } from "./components";
 
 function App() {
   return (
     <div className={`${classes.App}`}>
-        <h1>Hello world</h1>
+      <AppRouter />
     </div>
   );
 }

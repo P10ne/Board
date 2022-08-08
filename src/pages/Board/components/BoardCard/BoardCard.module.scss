@@ -1,0 +1,13 @@
+.dragActive {
+  opacity: 0;
+}
+
+.border {
+  &Top {
+    border-top: 1px solid red;
+  }
+
+  &Bottom {
+    border-bottom: 1px solid red;
+  }
+}
