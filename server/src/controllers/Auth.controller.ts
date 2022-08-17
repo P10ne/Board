@@ -1,11 +1,11 @@
 import { Controller, Post } from '@decorators/express';
 import { Inject } from '@decorators/di';
-import { sendJsonResponse, sendErrorResponse } from '../../utils/utils';
-import { AuthService, TokenService, UsersService } from '../../services';
-import { IPublicUser, IUser } from '../../models/IUser';
-import { TExpressRequest, TExpressResponse } from '../../models';
-import { MessagesToken } from '../../InjectionTokens';
-import { TMessages } from '../../MESSAGES';
+import { sendJsonResponse, sendErrorResponse } from '../utils/utils';
+import { AuthService, TokenService, UsersService } from '../services';
+import { IPublicUser, IUser } from '../models/IUser';
+import { TExpressRequest, TExpressResponse } from '../models';
+import { MessagesToken } from '../InjectionTokens';
+import { TMessages } from '../MESSAGES';
 
 type TLoginRequestBody = {
     email: string;

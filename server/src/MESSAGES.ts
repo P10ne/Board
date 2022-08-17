@@ -1,6 +1,7 @@
 const MESSAGES = {
     COMMON: {
-        UNEXPECTED_ERROR: 'Unexpected error'
+        UNEXPECTED_ERROR: 'Unexpected error',
+        INSTANCE_NOT_FOUND: 'Instance not found'
     },
     AUTH: {
         INPUT_IS_INCORRECT: 'Email or password is incorrect',

@@ -1,7 +1,14 @@
 import initApp from './app';
-import { ConfigToken, MessagesToken, UserModelToken } from './InjectionTokens';
+import {
+    BoardModelToken,
+    CardModelToken,
+    ColumnModelToken,
+    ConfigToken,
+    MessagesToken,
+    UserModelToken
+} from './InjectionTokens';
 import CONFIG from './CONFIG';
-import { User } from './sequelize/models';
+import { Board, Card, Column, User } from './sequelize/models';
 import MESSAGES from './MESSAGES';
 
 const init = async () => {
@@ -10,6 +17,9 @@ const init = async () => {
             { provide: MessagesToken, useValue: MESSAGES },
             { provide: ConfigToken, useValue: CONFIG },
             { provide: UserModelToken, useValue: User },
+            { provide: BoardModelToken, useValue: Board },
+            { provide: ColumnModelToken, useValue: Column },
+            { provide: CardModelToken, useValue: Card },
         ]
     });
     app.listen(3001, () => { console.log('app') })

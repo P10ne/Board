@@ -2,7 +2,7 @@ import { Column, DataType, Model, Table } from 'sequelize-typescript';
 import { IUser } from '../../models';
 import { IPublicUser } from '../../models/IUser';
 
-@Table
+@Table({ timestamps: false })
 class User extends Model<IUser, Omit<IUser, 'id'>> implements IUser {
     @Column({
         type: DataType.INTEGER,

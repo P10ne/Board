@@ -11,6 +11,7 @@
     "node_modules"
   ],
   "typeRoots": [
-    "jest/jest.d.ts"
+    "jest/jest.d.ts",
+    "jest/e2e/supertest/supertest.d.ts"
   ]
 }

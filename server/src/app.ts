@@ -3,9 +3,9 @@ import { Provider } from '@decorators/di/lib/src/types';
 const express = require('express');
 const bodyParser = require('body-parser');
 import { attachControllers } from '@decorators/express';
-import AuthController from './controllers/Auth/Auth.controller';
 import { Container } from '@decorators/di';
 import initSequelize from './sequelize';
+import { AuthController, BoardController, CardController, ColumnController } from './controllers';
 
 export type TInitAppConfig = {
     providers: Provider[]
@@ -26,7 +26,10 @@ const initApp = async ({ providers }: TInitAppConfig) => {
 
     const apiRouter = express.Router();
     attachControllers(apiRouter, [
-        AuthController
+        AuthController,
+        BoardController,
+        ColumnController,
+        CardController
     ]);
     app.use('/api', apiRouter);
     return app;

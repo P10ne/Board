@@ -1,4 +1,23 @@
-const CONFIG = {
+import { SyncOptions } from 'sequelize';
+import { SequelizeOptions } from 'sequelize-typescript/dist/sequelize/sequelize/sequelize-options';
+
+export type TConfig = {
+    tokenSecret: string;
+    tokens: {
+        access: {
+            expiresIn: number;
+        },
+        refresh: {
+            expiresIn: number;
+        }
+    },
+    sequelize: {
+        createOptions: SequelizeOptions;
+        syncOptions: SyncOptions;
+    }
+};
+
+const CONFIG: TConfig = {
     tokenSecret: 'SECRET_KEY',
     tokens: {
         access: {
@@ -9,11 +28,9 @@ const CONFIG = {
         }
     },
     sequelize: {
-        storage: 'src/db/db.db',
-        syncOptions: {}
+        createOptions: { storage: 'src/db/db.db', dialect: 'sqlite' },
+        syncOptions: { alter: true }
     }
 };
-
-export type TConfig = typeof CONFIG;
 
 export default CONFIG;
