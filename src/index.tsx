@@ -8,12 +8,16 @@ import RootStore, { TRootStore } from './store';
 import Board from './store/Board';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { createdAuth } from './store/Auth';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-const store = RootStore.create({ board: Board.create() });
+export const store = RootStore.create({
+    board: Board.create(),
+    auth: createdAuth
+});
 
 export const StoreContext = createContext<TRootStore>(store);
 

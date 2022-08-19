@@ -2,7 +2,8 @@ import { cast, flow, Instance, types } from 'mobx-state-tree';
 import BoardColumn, { TBoardColumnModel } from './BoardColumn';
 import BoardCards from './BoardCards';
 import FetchableNode from './FetchableNode';
-import { boardApi } from '../api';
+import BoardColumnApi from '../api/api/BoardColumnApi';
+import { boardColumnApi } from '../api';
 
 const BoardColumns = types.compose('BoardColumns',
     types.model({
@@ -13,7 +14,7 @@ const BoardColumns = types.compose('BoardColumns',
     const fetch = flow(function* (boardId) {
         self.isLoading = true;
         try {
-            const response: TBoardColumnModel[] = yield boardApi.getColumns(boardId);
+            const response: TBoardColumnModel[] = yield boardColumnApi.getList(boardId);
             self.data = cast(response.map(item => BoardColumn.create({ attributes: item, cards: BoardCards.create() })));
         } catch (e) {
             self.error = 'Some error';

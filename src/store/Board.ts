@@ -4,6 +4,8 @@ import { boardApi, boardCardApi, boardColumnApi } from '../api';
 import FetchableNode from './FetchableNode';
 import { TBoardCardModel, TBoardCardStore } from './BoardCard';
 import { TBoardColumnModel, TBoardColumnStore } from './BoardColumn';
+import BoardApi from '../api/api/BoardApi';
+import BoardCardApi from '../api/api/BoardCardApi';
 
 const BoardModel = types.model('BoardModel', {
     id: types.number,
@@ -54,8 +56,8 @@ const Board = types.compose(
 
         const saveMoving = flow(function* (card: TBoardCardStore, targetColumnId: TBoardColumnModel['id']) {
             try {
-                yield boardCardApi.move(getSnapshot(card.attributes), targetColumnId);
-                yield boardColumnApi.updateCardsList();
+                // yield boardCardApi.move(getSnapshot(card.attributes), targetColumnId);
+                // yield boardColumnApi.updateCardsList();
             } catch (e) {
                 alert('Some error on move card');
                 console.error(e);

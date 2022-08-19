@@ -15,9 +15,8 @@ const publicRoutes: PathRouteProps[] = [
 ];
 
 const AppRouter: FC = () => {
-    // const { user } = useStore();
-    const user = {isAuth: true}
-    const routes = user.isAuth ? privateRoutes : publicRoutes;
+    const authorizedStatus = useStore(state => state.auth.isAuthorized);
+    const routes = [...publicRoutes, ...(authorizedStatus === null || authorizedStatus ? privateRoutes : [])]
 
     return (
         <MainLayout>

@@ -1,21 +1,15 @@
 import BaseApi from '../BaseApi';
-import { TBoardModel, TBoardColumnModel } from '../../store';
-
-type TBoard = TBoardModel;
+import { TBoardModel } from '../../store';
+import { API_PATH } from '../constants';
 
 class BoardApi extends BaseApi {
-    async get(id: TBoard['id']): Promise<TBoard> {
-        try {
-            const response = await this.fetcher.get<TBoard>(`/boards/${id}`);
-            return response.data;
-        } catch (e) {
-            throw e;
-        }
+    constructor() {
+        super({ basePath: `${API_PATH}/board` });
     }
 
-    async getColumns(boardId: TBoard['id']): Promise<TBoardColumnModel[]> {
+    async get(id: TBoardModel['id']): Promise<TBoardModel> {
         try {
-            const response = await this.fetcher.get<TBoardColumnModel[]>(`/columns?boardId=${boardId}`);
+            const response = await this.fetcher.get<TBoardModel>(`/${id}`);
             return response.data;
         } catch (e) {
             throw e;
