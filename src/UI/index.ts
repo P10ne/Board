@@ -7,6 +7,9 @@ import Form from './Form/Form';
 import PageHeader from './PageHeader/PageHeader';
 import Row from './Row/Row';
 import Col from './Col/Col';
+import Spin from './Spin/Spin';
+import Button from './Button/Button';
+import Input from './Input/Input';
 
 export {
     Layout,
@@ -17,7 +20,10 @@ export {
     Form,
     PageHeader,
     Row,
-    Col
+    Col,
+    Spin,
+    Button,
+    Input
 }
 
 export type {

@@ -6,12 +6,28 @@ type TRefreshResponse = {
     refreshToken: string;
 }
 
+type TLoginResponse = TRefreshResponse;
+
+type TLoginPayload = {
+    email: string;
+    password: string;
+    fingerPrint: string;
+}
+
 class AuthApi extends BaseApi {
     constructor() {
         super({ basePath: `${API_PATH}/auth` });
     }
 
-    login() {}
+    async login(data: TLoginPayload): Promise<TLoginResponse> {
+        try {
+            const response = await this.fetcher.post<TLoginResponse>('/login', data, {}, { useAuth: false });
+            return response.data;
+        } catch (e) {
+            throw e;
+        }
+    }
+
     async refresh(refreshToken: string, fingerPrint: string): Promise<TRefreshResponse | null> {
         try {
             const response = await this.fetcher.post<TRefreshResponse>('/refresh', { refreshToken, fingerPrint }, {}, { useAuth: false });
@@ -20,6 +36,7 @@ class AuthApi extends BaseApi {
             return null;
         }
     }
+
     async check(): Promise<boolean> {
         try {
             await this.fetcher.get('/check');

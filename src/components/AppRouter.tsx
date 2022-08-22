@@ -5,7 +5,7 @@ import Board from '../pages/Board/Board';
 import { PathRouteProps } from 'react-router';
 import { observer } from 'mobx-react-lite';
 import MainLayout from './MainLayout/MainLayout';
-import { useStore } from '../hooks';
+import PrivateRoute from './PrivateRoute/PrivateRoute';
 
 const privateRoutes: PathRouteProps[] = [
     { path: '/board/:id', element: <Board /> }
@@ -15,14 +15,16 @@ const publicRoutes: PathRouteProps[] = [
 ];
 
 const AppRouter: FC = () => {
-    const authorizedStatus = useStore(state => state.auth.isAuthorized);
-    const routes = [...publicRoutes, ...(authorizedStatus === null || authorizedStatus ? privateRoutes : [])]
 
     return (
         <MainLayout>
             <BrowserRouter>
                 <Routes>
-                    { routes.map(routeProps => <Route {...routeProps} key={routeProps.path} />) }
+                    {
+                        privateRoutes.map(routeProps => <Route {...routeProps} key={routeProps.path} element={<PrivateRoute>{routeProps.element}</PrivateRoute>} /> )
+                    }
+                    { publicRoutes.map(routeProps => <Route {...routeProps} key={routeProps.path} />) }
+
                 </Routes>
             </BrowserRouter>
         </MainLayout>

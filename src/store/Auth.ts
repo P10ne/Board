@@ -5,10 +5,25 @@ import { when } from 'mobx';
 import jwtDecode from 'jwt-decode';
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
 
-const Auth = types.model({
+type TAuthByEmailPayload = {
+    email: string;
+    password: string;
+}
+
+const Auth = types.model('Auth',{
     isAuthorized: types.maybeNull(types.boolean),
     isRefreshing: types.optional(types.boolean, false)
 }).actions(self => {
+    const authByEmail = flow(function* (data: TAuthByEmailPayload) {
+        const fingerPrint = yield getFingerPrint();
+        const { accessToken, refreshToken } = yield authApi.login({
+            ...data,
+            fingerPrint
+        });
+        setAccessToken(accessToken);
+        setRefreshToken(refreshToken);
+        self.isAuthorized = true;
+    })
     const getFingerPrint = async () => {
         const fp = await FingerprintJS.load();
         const result = await fp.get();
@@ -19,12 +34,14 @@ const Auth = types.model({
         const refreshToken = getRefreshToken();
         if (!refreshToken) {
             self.isAuthorized = false;
+            self.isRefreshing = false;
             return;
         }
         const fingerPrint = yield getFingerPrint();
         const refreshResponse = yield authApi.refresh(refreshToken, fingerPrint);
         if (!refreshResponse) {
             self.isAuthorized = false;
+            self.isRefreshing = false;
             return;
         }
         setAccessToken(refreshResponse.accessToken);
@@ -56,13 +73,13 @@ const Auth = types.model({
     }
     const afterCreate = async () => {
         setTimeout(() => Fetcher.AuthState = createdAuth);
-        await refreshTokens();
     }
 
     return {
         getAccessToken,
         afterCreate,
-        refreshTokens
+        refreshTokens,
+        authByEmail
     }
 });
 
