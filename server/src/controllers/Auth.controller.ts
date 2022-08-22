@@ -117,15 +117,19 @@ class AuthController {
         }
     }
 
-    @Post('/reg')
-    async reg(req: TExpressRequest<TRegRequestBody>, res: TExpressResponse<TRegResponseBody>) {
-        const { email, password } = req.body;
+    @Post('/registration')
+    async reg(
+        @Body() data: TRegRequestBody,
+        @Response() res: TExpressResponse<TRegResponseBody>
+    ) {
+        const { email, password } = data;
+        console.log(email, password);
         if (!email || !password) {
             sendErrorResponse(res, 400, this.messages.AUTH.INPUT_IS_INCORRECT);
             return;
         }
         try {
-            const user = await this.usersService.add(req.body);
+            const user = await this.usersService.add(data);
             sendJsonResponse(res, 200, user.getPublicUser());
         } catch {
             sendErrorResponse(res, 400, this.messages.COMMON.UNEXPECTED_ERROR);

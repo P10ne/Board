@@ -1,5 +1,6 @@
 import BaseApi from '../BaseApi';
 import { API_PATH } from '../constants';
+import { IPublicUser } from '../../../server/src/models/IUser';
 
 type TRefreshResponse = {
     accessToken: string;
@@ -18,6 +19,13 @@ type TLoginGooglePayload = {
     code: string;
     fingerPrint: string;
 }
+
+type TRegistrationPayload = {
+    email: string;
+    password: string;
+}
+
+type TRegistrationResponse = IPublicUser;
 
 class AuthApi extends BaseApi {
     constructor() {
@@ -48,6 +56,15 @@ class AuthApi extends BaseApi {
             return response.data;
         } catch (e) {
             return null;
+        }
+    }
+
+    async registration(data: TRegistrationPayload): Promise<TRegistrationResponse> {
+        try {
+            const response = await this.fetcher.post<TRegistrationResponse>('/registration', data, {}, { useAuth: false } );
+            return response.data;
+        } catch (e) {
+            throw e;
         }
     }
 

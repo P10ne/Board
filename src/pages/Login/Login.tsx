@@ -1,6 +1,6 @@
 import { FC, useCallback, useEffect } from 'react';
 import classes from './Login.module.scss';
-import { Header, Content, Menu, Card, Col, Row } from '../../UI';
+import { Header, Content, Menu, Card, Col, Row, Button, Space } from '../../UI';
 import { LoginForm, SocialAuth, Socials, TLoginFormProps } from './components';
 import { useStore } from '../../hooks';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -22,6 +22,10 @@ const Login: FC = () => {
         authByEmail({ email, password });
     }, []);
 
+    const goToSignIn = () => {
+        navigate('/registration');
+    }
+
     return (
         <>
             <Header>
@@ -35,9 +39,16 @@ const Login: FC = () => {
                     <Col>
                         <GoogleOAuthProvider clientId='699402229806-b7t96b0nouvoslom4h09ic9or2pruruc.apps.googleusercontent.com'>
                             <Card className={classes.card}>
-                                <LoginForm
-                                    onEmailAuth={onEmailAuth}
-                                />
+                                <div>
+                                    <Space direction='vertical'>
+                                        <LoginForm
+                                            onEmailAuth={onEmailAuth}
+                                        />
+                                        <Button
+                                            onClick={goToSignIn}
+                                            type='link'>Go to Sign In</Button>
+                                    </Space>
+                                </div>
                                 <SocialAuth />
                             </Card>
                         </GoogleOAuthProvider>

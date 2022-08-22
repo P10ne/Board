@@ -1,13 +1,18 @@
 import { FC } from 'react';
 import { Button, Form, Input } from '../../../../UI';
 
-export type TLoginFormProps = {
-    onEmailAuth: ({ email, password }: { email: string, password: string }) => void,
+type TRegFormValues = {
+    email: string;
+    password: string;
 }
 
-const LoginForm: FC<TLoginFormProps> = ({ onEmailAuth }) => {
-    const onFinishForm: TLoginFormProps['onEmailAuth'] = formValues => {
-        onEmailAuth(formValues);
+export type TRegFormProps = {
+    onReg: (data: { values: TRegFormValues}) => void
+}
+
+const RegForm: FC<TRegFormProps> = ({ onReg }) => {
+    const onFinishForm = (data: TRegFormValues) => {
+        onReg({ values: data });
     }
 
     return (
@@ -35,11 +40,11 @@ const LoginForm: FC<TLoginFormProps> = ({ onEmailAuth }) => {
             </Form.Item>
 
 
-                <Button type="primary" htmlType="submit">
-                    Log in
-                </Button>
+            <Button type="primary" htmlType="submit">
+                Sign in
+            </Button>
         </Form>
     )
 }
 
-export default LoginForm;
+export default RegForm;

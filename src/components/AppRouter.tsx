@@ -6,11 +6,13 @@ import { PathRouteProps } from 'react-router';
 import { observer } from 'mobx-react-lite';
 import MainLayout from './MainLayout/MainLayout';
 import PrivateRoute from './PrivateRoute/PrivateRoute';
+import Registration from '../pages/Registration/Registration';
 
 const privateRoutes: PathRouteProps[] = [
     { path: '/board/:id', element: <Board /> }
 ];
 const publicRoutes: PathRouteProps[] = [
+    { path: '/registration', element: <Registration /> },
     { path: '/login', element: <Login /> }
 ];
 

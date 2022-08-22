@@ -10,6 +10,7 @@ import Col from './Col/Col';
 import Spin from './Spin/Spin';
 import Button from './Button/Button';
 import Input from './Input/Input';
+import Space from './Space/Space';
 
 export {
     Layout,
@@ -23,7 +24,8 @@ export {
     Col,
     Spin,
     Button,
-    Input
+    Input,
+    Space
 }
 
 export type {
