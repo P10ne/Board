@@ -1,9 +1,12 @@
 import { FC, useCallback, useEffect } from 'react';
+import classes from './Login.module.scss';
 import { Header, Content, Menu, Card, Col, Row } from '../../UI';
-import { LoginForm, TLoginFormProps } from './components';
+import { LoginForm, SocialAuth, Socials, TLoginFormProps } from './components';
 import { useStore } from '../../hooks';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { TSocialAuthProps } from './components/Socials/Socials';
 
 const Login: FC = () => {
     const { authByEmail, isAuthorized } = useStore(state => state.auth);
@@ -27,12 +30,17 @@ const Login: FC = () => {
                     mode="horizontal"
                 />
             </Header>
-            <Content style={{ padding: '0 50px' }}>
+            <Content>
                 <Row justify='center' align='middle' style={{height: '100%'}}>
                     <Col>
-                        <Card style={{width: 400}}>
-                            <LoginForm onEmailAuth={onEmailAuth} />
-                        </Card>
+                        <GoogleOAuthProvider clientId='699402229806-b7t96b0nouvoslom4h09ic9or2pruruc.apps.googleusercontent.com'>
+                            <Card className={classes.card}>
+                                <LoginForm
+                                    onEmailAuth={onEmailAuth}
+                                />
+                                <SocialAuth />
+                            </Card>
+                        </GoogleOAuthProvider>
                     </Col>
                 </Row>
             </Content>

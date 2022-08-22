@@ -10,10 +10,21 @@ type TAuthByEmailPayload = {
     password: string;
 }
 
+type TAuthByGooglePayload = {
+    code: string;
+}
+
 const Auth = types.model('Auth',{
     isAuthorized: types.maybeNull(types.boolean),
     isRefreshing: types.optional(types.boolean, false)
 }).actions(self => {
+    const authByGoogle = flow(function* (data: TAuthByGooglePayload) {
+        const fingerPrint = yield getFingerPrint();
+        const { accessToken, refreshToken } = yield authApi.loginGoogle({ ...data, fingerPrint });
+        setAccessToken(accessToken);
+        setRefreshToken(refreshToken);
+        self.isAuthorized = true;
+    })
     const authByEmail = flow(function* (data: TAuthByEmailPayload) {
         const fingerPrint = yield getFingerPrint();
         const { accessToken, refreshToken } = yield authApi.login({
@@ -79,7 +90,8 @@ const Auth = types.model('Auth',{
         getAccessToken,
         afterCreate,
         refreshTokens,
-        authByEmail
+        authByEmail,
+        authByGoogle
     }
 });
 

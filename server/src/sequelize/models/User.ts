@@ -22,6 +22,12 @@ class User extends Model<IUser, Omit<IUser, 'id'>> implements IUser {
     })
     password: string;
 
+    @Column({
+        type: DataType.BOOLEAN,
+        defaultValue: false
+    })
+    fromSocial: boolean;
+
     getPublicUser(): IPublicUser {
         const { id, email } = this.toJSON();
         return {

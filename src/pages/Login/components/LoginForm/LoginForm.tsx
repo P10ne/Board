@@ -1,8 +1,8 @@
-import { memo, FC, useCallback } from 'react';
+import { FC } from 'react';
 import { Button, Form, Input } from '../../../../UI';
 
 export type TLoginFormProps = {
-    onEmailAuth: ({ email, password }: { email: string, password: string }) => void
+    onEmailAuth: ({ email, password }: { email: string, password: string }) => void,
 }
 
 const LoginForm: FC<TLoginFormProps> = ({ onEmailAuth }) => {
@@ -13,8 +13,8 @@ const LoginForm: FC<TLoginFormProps> = ({ onEmailAuth }) => {
     return (
         <Form
             name="basic"
-            labelCol={{ span: 6 }}
-            wrapperCol={{ span: 18 }}
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}
             onFinish={onFinishForm}
             autoComplete="off"
         >
@@ -34,11 +34,10 @@ const LoginForm: FC<TLoginFormProps> = ({ onEmailAuth }) => {
                 <Input.Password />
             </Form.Item>
 
-            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+
                 <Button type="primary" htmlType="submit">
                     Submit
                 </Button>
-            </Form.Item>
         </Form>
     )
 }

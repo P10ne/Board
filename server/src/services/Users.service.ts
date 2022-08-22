@@ -19,7 +19,7 @@ class UsersService {
     async add(data: Partial<IUser>): Promise<User> {
         const userDataToAdd: Partial<IUser> = {
             ...data,
-            password: hashSync(data.password, 10)
+            password: data.fromSocial ? '' : hashSync(data.password, 10)
         }
         return await this.userModel.create(userDataToAdd);
     }

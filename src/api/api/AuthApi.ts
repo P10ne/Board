@@ -14,9 +14,23 @@ type TLoginPayload = {
     fingerPrint: string;
 }
 
+type TLoginGooglePayload = {
+    code: string;
+    fingerPrint: string;
+}
+
 class AuthApi extends BaseApi {
     constructor() {
         super({ basePath: `${API_PATH}/auth` });
+    }
+
+    async loginGoogle(data: TLoginGooglePayload): Promise<TLoginResponse> {
+        try {
+            const response = await this.fetcher.post<TLoginResponse>('/google-login', data, {},  { useAuth: false });
+            return response.data;
+        } catch (e) {
+            throw e;
+        }
     }
 
     async login(data: TLoginPayload): Promise<TLoginResponse> {

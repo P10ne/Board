@@ -1,0 +1,10 @@
+.card {
+    width: 600px;
+
+    :global {
+        .ant-card-body {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+}

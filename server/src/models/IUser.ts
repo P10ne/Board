@@ -5,6 +5,7 @@ export interface IPublicUserFields {
 
 export interface IPrivateUserFields {
     password: string;
+    fromSocial: boolean;
 }
 
 export interface IUser extends IPublicUserFields, IPrivateUserFields {}

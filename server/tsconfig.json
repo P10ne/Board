@@ -12,6 +12,7 @@
   ],
   "typeRoots": [
     "jest/jest.d.ts",
-    "jest/e2e/supertest/supertest.d.ts"
+    "jest/e2e/supertest/supertest.d.ts",
+    "environment.d.ts"
   ]
 }

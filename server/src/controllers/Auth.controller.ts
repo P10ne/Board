@@ -1,11 +1,13 @@
-import { Controller, Post } from '@decorators/express';
+import { Body, Controller, Get, Post, Query, Response } from '@decorators/express';
 import { Inject } from '@decorators/di';
+import { google } from 'googleapis';
 import { sendJsonResponse, sendErrorResponse } from '../utils/utils';
 import { AuthService, TokenService, UsersService } from '../services';
 import { IPublicUser, IUser } from '../models/IUser';
-import { TExpressRequest, TExpressResponse } from '../models';
+import { IGoogleMe, TExpressRequest, TExpressResponse } from '../models';
 import { MessagesToken } from '../InjectionTokens';
 import { TMessages } from '../MESSAGES';
+import { User } from '../sequelize/models';
 
 type TLoginRequestBody = {
     email: string;
@@ -27,6 +29,11 @@ type TRefreshResponseBody = {
     refreshToken: string;
 }
 
+type TGoogleLoginBody = {
+    fingerPrint: string;
+    code: string;
+}
+
 type TRegRequestBody = Partial<IUser>;
 type TRegResponseBody = IPublicUser;
 
@@ -39,19 +46,46 @@ class AuthController {
         @Inject(MessagesToken) private messages: TMessages
     ) {}
 
+    @Post('/google-login')
+    async googleLogin(
+        @Response() res: TExpressResponse<any>,
+            @Body() data: TGoogleLoginBody
+    ): Promise<void> {
+        const authClient = new google.auth.OAuth2(
+            process.env.GOOGLE_CLIENT_ID,
+            process.env.GOOGLE_CLIENT_SECRET,
+            process.env.GOOGLE_REDIRECT_URI
+        );
+        const response = await authClient.getToken(data.code);
+        authClient.setCredentials(response.tokens);
+        try {
+            const meResponse = await authClient.request<IGoogleMe>({ url: 'https://people.googleapis.com/v1/people/me?personFields=names,emailAddresses,photos' });
+            const user = await this.authService.regOrLoginByGoogle(meResponse.data);
+
+            this.sendLoginResponse(res, { user,  fingerPrint: data.fingerPrint})
+        } catch (e) {
+            console.log(e);
+            sendErrorResponse(res, 400, this.messages.COMMON.UNEXPECTED_ERROR);
+        }
+    }
+
     @Post('/login')
     async login(req: TExpressRequest<TLoginRequestBody>, res: TExpressResponse<TLoginResponseBody>) {
         const { email, password, fingerPrint } = req.body;
         const user = await this.authService.authenticate(email, password);
-        if (!user) {
+        if (!user || user.fromSocial) {
             sendErrorResponse(res, 403, this.messages.AUTH.INPUT_IS_INCORRECT);
             return;
         }
+        this.sendLoginResponse(res, { user, fingerPrint });
+    }
+
+    private sendLoginResponse(res, { user, fingerPrint }: { user: User, fingerPrint: string}): void {
         const publicUser = user.getPublicUser();
         const accessToken = this.tokenService.generateAccessToken({ user: publicUser });
         const refreshToken = this.tokenService.generateRefreshToken({
             user: publicUser,
-            fingerPrint: fingerPrint
+            fingerPrint
         });
         sendJsonResponse(res, 200, {
             accessToken,
