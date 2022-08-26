@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@decorators/di';
 import { CardModelToken } from '../InjectionTokens';
 import { Card } from '../sequelize/models';
-import { ICard, IColumn } from '../../../CommonTypes';
+import { ICard, IColumn } from '../../../src/CommonTypes';
 
 @Injectable()
 class CardService {

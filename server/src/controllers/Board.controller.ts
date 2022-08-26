@@ -6,7 +6,7 @@ import { AuthMiddleware } from '../middlewares';
 import BoardService from '../services/Board.service';
 import { MessagesToken } from '../InjectionTokens';
 import { TMessages } from '../MESSAGES';
-import { IBoard, IBoardToCreate } from '../../../CommonTypes';
+import { IBoard, IDraftBoard } from '../../../src/CommonTypes';
 
 @Controller('/board', [AuthMiddleware])
 class BoardController {
@@ -39,7 +39,7 @@ class BoardController {
 
     @Post('/')
     async create(
-        @Body() payload: IBoardToCreate,
+        @Body() payload: IDraftBoard,
         @Response() res: TExpressResponse<IBoard>
     ): Promise<void> {
         try {

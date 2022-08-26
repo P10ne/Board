@@ -1,42 +1,58 @@
 import BaseApi from '../BaseApi';
-import { TBoardCardModel, TBoardColumnModel } from '../../store';
 import { API_PATH } from '../constants';
-import { ICard, ICardToCreate, IColumn, IColumnToCreate } from '../../../CommonTypes';
+import { ICard, IColumn, IDraftCard } from '../../CommonTypes';
 
 class BoardCardApi extends BaseApi {
     constructor() {
         super({ basePath: `${API_PATH}/card` });
     }
 
-    async getList(columnId: TBoardColumnModel['id']): Promise<TBoardCardModel[]> {
+    async getList(columnId: IColumn['id']): Promise<ICard[]> {
         try {
-            const response = await this.fetcher.get<TBoardCardModel[]>(`/list/${columnId}`);
+            const response = await this.fetcher.get<ICard[]>(`/list/${columnId}`);
             return response.data;
         } catch (e) {
             throw e;
         }
     }
 
-    async move(card: TBoardCardModel, targetColumnId: TBoardColumnModel['id']): Promise<void> {
+    // async move(card: TBoardCardModel, targetColumnId: TBoardColumnModel['id']): Promise<void> {
+    //     try {
+    //         const updatedCardData: TBoardCardModel & { columnId: TBoardColumnModel['id'] } = {
+    //             ...card,
+    //             columnId: targetColumnId
+    //         }
+    //         await this.fetcher.put<void, TBoardCardModel>(`/card/${card.id}`, updatedCardData);
+    //     } catch (e) {
+    //         throw e;
+    //     }
+    // }
+
+    async create(data: IDraftCard): Promise<ICard> {
         try {
-            const updatedCardData: TBoardCardModel & { columnId: TBoardColumnModel['id'] } = {
-                ...card,
-                columnId: targetColumnId
-            }
-            await this.fetcher.put<void, TBoardCardModel>(`/card/${card.id}`, updatedCardData);
+            const response = await this.fetcher.post<ICard, IDraftCard>('/', data);
+            return response.data;
         } catch (e) {
             throw e;
         }
     }
 
-    async create(data: ICardToCreate): Promise<ICard> {
+    async update(data: ICard): Promise<ICard> {
         try {
-            const response = await this.fetcher.post<ICard, ICardToCreate>('/', data);
+            const response = await this.fetcher.put<ICard, ICard>('/', data);
             return response.data;
+        } catch (e) {
+            throw e;
+        }
+    }
+
+    async delete(id: ICard['id']): Promise<void> {
+        try {
+            await this.fetcher.delete(`/${id}`);
         } catch (e) {
             throw e;
         }
     }
 }
 
-export default new BoardCardApi();
+export default BoardCardApi;

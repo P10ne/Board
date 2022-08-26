@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { TAuthStore } from '../store/Auth';
+import { IAuthStore } from '../store/auth/AuthStore';
 
 type TRequestConfig<T> = AxiosRequestConfig<T>;
 type TResponse<T> = AxiosResponse<T>;
@@ -18,7 +18,7 @@ const defaultRequestOptions: TRequestOptions = {
 
 class Fetcher {
     private readonly basePath?: string;
-    static AuthState?: TAuthStore;
+    static AuthState?: IAuthStore;
 
     constructor({ basePath }: TFetcherOptions) {
         this.basePath = basePath;

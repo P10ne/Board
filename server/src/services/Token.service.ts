@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 import { ConfigToken, MessagesToken } from '../InjectionTokens';
 import { TConfig } from '../CONFIG';
 import { TMessages } from '../MESSAGES';
-import { IPublicUser } from '../../../CommonTypes';
+import { IPublicUser } from '../../../src/CommonTypes';
 
 export type TAccessTokenPayload = {
     user: IPublicUser;

@@ -1,9 +1,9 @@
 import { Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
 import ColumnModel from './Column';
-import { ICard, ICardToCreate } from '../../../../CommonTypes';
+import { ICard, IDraftCard } from '../../../../src/CommonTypes';
 
 @Table({ timestamps: false })
-class Card extends Model<ICard, ICardToCreate> implements ICard {
+class Card extends Model<ICard, IDraftCard> implements ICard {
     @Column({
         type: DataType.INTEGER,
         primaryKey: true,

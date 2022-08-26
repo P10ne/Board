@@ -1,14 +1,14 @@
 import BaseApi from '../BaseApi';
-import { TBoardColumnModel, TBoardModel } from '../../store';
 import { API_PATH } from '../constants';
-import { IBoard, IColumn, IColumnToCreate } from '../../../CommonTypes';
+import { IBoard, IColumn, IDraftColumn } from '../../CommonTypes';
+import { IBoardStore } from '../../store/board/BoardStore';
 
 class BoardColumnApi extends BaseApi {
     constructor() {
         super({ basePath: `${API_PATH}/column` });
     }
 
-    async getList(boardId: TBoardModel['id']): Promise<IColumn[]> {
+    async getList(boardId: IBoard['id']): Promise<IColumn[]> {
         try {
             const response = await this.fetcher.get<IColumn[]>(`/list/${boardId}`);
             return response.data;
@@ -17,14 +17,14 @@ class BoardColumnApi extends BaseApi {
         }
     }
 
-    // todo updateCardsList request
-    async updateCardsList(): Promise<void> {
-        return Promise.resolve();
-    }
+    // // todo updateCardsList request
+    // async updateCardsList(): Promise<void> {
+    //     return Promise.resolve();
+    // }
 
-    async create(data: IColumnToCreate): Promise<IColumn> {
+    async create(data: IDraftColumn): Promise<IColumn> {
         try {
-            const response = await this.fetcher.post<IColumn, IColumnToCreate>('/', data);
+            const response = await this.fetcher.post<IColumn, IDraftColumn>('/', data);
             return response.data;
         } catch (e) {
             throw e;
@@ -38,6 +38,15 @@ class BoardColumnApi extends BaseApi {
             throw e;
         }
     }
+
+    async update(data: IColumn): Promise<IColumn> {
+        try {
+            const response = await this.fetcher.put<IColumn, IColumn>('/', data);
+            return response.data;
+        } catch (e) {
+            throw e;
+        }
+    }
 }
 
-export default new BoardColumnApi();
+export default BoardColumnApi;

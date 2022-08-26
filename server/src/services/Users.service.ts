@@ -1,4 +1,4 @@
-import { IUserToCreate } from '../../../CommonTypes';
+import { IDraftUser } from '../../../src/CommonTypes';
 
 const { hashSync } = require('bcrypt');
 import { Inject, Injectable } from '@decorators/di';
@@ -17,8 +17,8 @@ class UsersService {
         })
     }
 
-    async add(data: IUserToCreate): Promise<User> {
-        const userDataToAdd: IUserToCreate = {
+    async add(data: IDraftUser): Promise<User> {
+        const userDataToAdd: IDraftUser = {
             ...data,
             password: data.fromSocial ? '' : hashSync(data.password, 10)
         }

@@ -1,6 +1,4 @@
 import Fetcher from './Fetcher';
-import RootStore from '../store';
-import { store } from '../index';
 
 type TBaseApiOptions = {
     basePath: string;

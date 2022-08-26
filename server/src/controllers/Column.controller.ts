@@ -6,7 +6,7 @@ import { TExpressResponse } from '../models';
 import { sendErrorResponse, sendJsonResponse } from '../utils/utils';
 import { MessagesToken } from '../InjectionTokens';
 import { TMessages } from '../MESSAGES';
-import { IColumn, IColumnToCreate } from '../../../CommonTypes';
+import { IColumn, IDraftColumn } from '../../../src/CommonTypes';
 
 @Controller('/column', [AuthMiddleware])
 class ColumnController {
@@ -33,7 +33,7 @@ class ColumnController {
     @Post('/')
     async create(
         @Response() res: TExpressResponse<IColumn>,
-        @Body() payload: IColumnToCreate
+        @Body() payload: IDraftColumn
     ): Promise<void> {
         try {
             const newColumn = await this.columnService.create(payload);

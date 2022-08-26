@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@decorators/di';
 import { Column } from '../sequelize/models';
 import { ColumnModelToken } from '../InjectionTokens';
-import { IBoard, IColumn, IColumnToCreate } from '../../../CommonTypes';
+import { IBoard, IColumn, IDraftColumn } from '../../../src/CommonTypes';
 import ColumnModel from '../sequelize/models/Column';
 
 @Injectable()
@@ -16,7 +16,7 @@ class ColumnService {
         });
     }
 
-    async create(column: IColumnToCreate): Promise<ColumnModel> {
+    async create(column: IDraftColumn): Promise<ColumnModel> {
         return await this.columnModel.create(column);
     }
 

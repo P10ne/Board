@@ -1,27 +1,21 @@
-import { Instance, types } from 'mobx-state-tree';
-import Board, { TBoardModel, TBoardStore } from './Board';
-import { TBoardColumnModel, TBoardColumnStore } from './BoardColumn';
-import { TBoardCardModel, TBoardCardStore } from './BoardCard';
-import { TBoardColumnsStore } from './BoardColumns';
-import Auth from './Auth';
+import { makeObservable, observable } from 'mobx';
+import AuthStore, { IAuthStore } from './auth/AuthStore';
+import BoardStore, { IBoardStore } from './board/BoardStore';
 
-const RootStore = types.model('RootStore', {
-    board: Board,
-    auth: Auth
-});
-
-
-type TRootStore = Instance<typeof RootStore>;
-
-export default RootStore;
-
-export type {
-    TRootStore,
-    TBoardModel,
-    TBoardStore,
-    TBoardColumnModel,
-    TBoardColumnStore,
-    TBoardCardModel,
-    TBoardCardStore,
-    TBoardColumnsStore
+export interface IRootStore {
+    board: IBoardStore;
+    auth: IAuthStore;
 }
+
+class RootStore implements IRootStore {
+    @observable board = new BoardStore();
+    @observable auth = new AuthStore();
+
+    constructor() {
+        makeObservable(this);
+    }
+}
+
+const rootStore = new RootStore();
+
+export default rootStore;
