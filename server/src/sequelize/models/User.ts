@@ -1,9 +1,8 @@
 import { Column, DataType, Model, Table } from 'sequelize-typescript';
-import { IUser } from '../../models';
-import { IPublicUser } from '../../models/IUser';
+import { IPublicUser, IUser, IUserToCreate } from '../../../../CommonTypes';
 
 @Table({ timestamps: false })
-class User extends Model<IUser, Omit<IUser, 'id'>> implements IUser {
+class User extends Model<IUser, IUserToCreate> implements IUser {
     @Column({
         type: DataType.INTEGER,
         primaryKey: true,
@@ -29,10 +28,11 @@ class User extends Model<IUser, Omit<IUser, 'id'>> implements IUser {
     fromSocial: boolean;
 
     getPublicUser(): IPublicUser {
-        const { id, email } = this.toJSON();
+        const { id, email, fromSocial } = this.toJSON();
         return {
             id,
-            email
+            email,
+            fromSocial
         }
     }
 }

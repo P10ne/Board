@@ -3,11 +3,11 @@ import { Inject } from '@decorators/di';
 import { google } from 'googleapis';
 import { sendJsonResponse, sendErrorResponse } from '../utils/utils';
 import { AuthService, TokenService, UsersService } from '../services';
-import { IPublicUser, IUser } from '../models/IUser';
 import { IGoogleMe, TExpressRequest, TExpressResponse } from '../models';
 import { MessagesToken } from '../InjectionTokens';
 import { TMessages } from '../MESSAGES';
 import { User } from '../sequelize/models';
+import { IPublicUser, IUser, IUserToCreate } from '../../../CommonTypes';
 
 type TLoginRequestBody = {
     email: string;
@@ -34,7 +34,7 @@ type TGoogleLoginBody = {
     code: string;
 }
 
-type TRegRequestBody = Partial<IUser>;
+type TRegRequestBody = IUserToCreate;
 type TRegResponseBody = IPublicUser;
 
 @Controller('/auth')

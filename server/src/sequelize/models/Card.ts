@@ -1,14 +1,6 @@
 import { Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
 import ColumnModel from './Column';
-
-export interface ICard {
-    id: number;
-    name: string;
-    body: string;
-    columnId: ColumnModel['id'];
-}
-
-export interface ICardToCreate extends Omit<ICard, 'id'> {}
+import { ICard, ICardToCreate } from '../../../../CommonTypes';
 
 @Table({ timestamps: false })
 class Card extends Model<ICard, ICardToCreate> implements ICard {

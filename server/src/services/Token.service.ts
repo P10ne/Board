@@ -2,8 +2,8 @@ import { Inject, Injectable } from '@decorators/di';
 const jwt = require('jsonwebtoken');
 import { ConfigToken, MessagesToken } from '../InjectionTokens';
 import { TConfig } from '../CONFIG';
-import { IPublicUser } from '../models/IUser';
 import { TMessages } from '../MESSAGES';
+import { IPublicUser } from '../../../CommonTypes';
 
 export type TAccessTokenPayload = {
     user: IPublicUser;

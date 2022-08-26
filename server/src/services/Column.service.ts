@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@decorators/di';
-import { IBoard } from '../sequelize/models/Board';
 import { Column } from '../sequelize/models';
 import { ColumnModelToken } from '../InjectionTokens';
-import ColumnModel, { IColumn } from '../sequelize/models/Column';
+import { IBoard, IColumn, IColumnToCreate } from '../../../CommonTypes';
+import ColumnModel from '../sequelize/models/Column';
 
 @Injectable()
 class ColumnService {
@@ -16,7 +16,7 @@ class ColumnService {
         });
     }
 
-    async create(column: Partial<IColumn>): Promise<ColumnModel> {
+    async create(column: IColumnToCreate): Promise<ColumnModel> {
         return await this.columnModel.create(column);
     }
 

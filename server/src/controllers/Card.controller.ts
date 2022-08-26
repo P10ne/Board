@@ -5,8 +5,8 @@ import { CardService } from '../services';
 import { MessagesToken } from '../InjectionTokens';
 import { TMessages } from '../MESSAGES';
 import { TExpressResponse } from '../models';
-import { ICard, IColumn } from '../sequelize/models';
 import { sendErrorResponse, sendJsonResponse } from '../utils/utils';
+import { ICard, IColumn } from '../../../CommonTypes';
 
 @Controller('/card', [AuthMiddleware])
 class CardController {

@@ -4,6 +4,7 @@ import BoardCards from './BoardCards';
 import FetchableNode from './FetchableNode';
 import BoardColumnApi from '../api/api/BoardColumnApi';
 import { boardColumnApi } from '../api';
+import { IColumn } from '../../CommonTypes';
 
 const BoardColumns = types.compose('BoardColumns',
     types.model({
@@ -23,8 +24,18 @@ const BoardColumns = types.compose('BoardColumns',
             self.isLoading = false;
         }
     });
+    const add = (data: TBoardColumnModel) => {
+        self.data.push(BoardColumn.create({ attributes: data, cards: BoardCards.create() }))
+    }
+
+    const remove = (id: TBoardColumnModel['id']) => {
+        self.data = cast(self.data.filter(col => col.attributes.id !== id))
+    }
+
     return {
-        fetch
+        fetch,
+        add,
+        remove
     }
 })
 

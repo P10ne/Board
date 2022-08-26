@@ -41,7 +41,7 @@ const Board: FC = () => {
                                 <PageHeader title={ board.data?.attributes.name } />
                                 <Layout>
                                     <MoveCardContext.Provider value={{ onCardHover: cardHoverHandler, onCardDrop: cardDropHandler}}>
-                                        <BoardColumns columnsData={board.data.columns} />
+                                        <BoardColumns columnsData={board.data.columns} boardId={board.data.attributes.id} />
                                     </MoveCardContext.Provider>
                                 </Layout>
                               </>

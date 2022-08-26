@@ -1,11 +1,5 @@
 import { Column, DataType, Model, Table } from 'sequelize-typescript';
-
-export interface IBoard {
-    id: number;
-    name: string;
-}
-
-export interface IBoardToCreate extends Omit<IBoard, 'id'> {}
+import { IBoard, IBoardToCreate } from '../../../../CommonTypes';
 
 @Table({ timestamps: false })
 class Board extends Model<IBoard, IBoardToCreate> implements IBoard {

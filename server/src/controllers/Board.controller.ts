@@ -1,12 +1,12 @@
-import { Controller, Get, Params, Post, Response, Request, Body, Put, Delete, Query } from '@decorators/express';
-import { TExpressRequest, TExpressResponse } from '../models';
-import { IBoard, IBoardToCreate } from '../sequelize/models/Board';
+import { Controller, Get, Params, Post, Response, Body, Put, Delete } from '@decorators/express';
+import { TExpressResponse } from '../models';
 import { sendErrorResponse, sendJsonResponse } from '../utils/utils';
 import { Inject } from '@decorators/di';
 import { AuthMiddleware } from '../middlewares';
 import BoardService from '../services/Board.service';
 import { MessagesToken } from '../InjectionTokens';
 import { TMessages } from '../MESSAGES';
+import { IBoard, IBoardToCreate } from '../../../CommonTypes';
 
 @Controller('/board', [AuthMiddleware])
 class BoardController {

@@ -36,6 +36,10 @@ class Fetcher {
         return this.request<R, D>(`${this.basePath + url}`, 'put', data, config, options);
     }
 
+    async delete<R, D = any>(url: string, data?: D, config?: TRequestConfig<D>, options?: TRequestOptions): Promise<TResponse<R>> {
+        return this.request<R, D>(`${this.basePath + url}`, 'delete', data, config, options);
+    }
+
     async request<R, D = any>(url: string, method: string, data?: D, axiosConfig?: TRequestConfig<D>, requestOptions?: TRequestOptions) {
         const options = requestOptions ? { ...defaultRequestOptions, ...requestOptions } : defaultRequestOptions;
         const { useAuth } = options;

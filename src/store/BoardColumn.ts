@@ -1,5 +1,9 @@
-import { Instance, SnapshotIn, types } from 'mobx-state-tree';
+import { flow, Instance, SnapshotIn, types } from 'mobx-state-tree';
 import BoardCards from './BoardCards';
+import ColumnModel from '../../server/src/sequelize/models/Column';
+import { boardColumnApi } from '../api';
+import { ICard } from '../../CommonTypes';
+import BoardCard from './BoardCard';
 
 const BoardColumnModel = types.model('BoardColumnModel', {
     id: types.identifierNumber,
@@ -14,11 +18,16 @@ const BoardColumn = types.model({
         self.cards.fetch(id);
     }
 
+    const addCard = (data: ICard) => {
+        self.cards.data.push(BoardCard.create({ attributes: data }))
+    }
+
     const afterCreate = () => {
         fetchCards(self.attributes.id);
     }
     return {
-        afterCreate
+        afterCreate,
+        addCard
     }
 }).named('BoardColumn');
 

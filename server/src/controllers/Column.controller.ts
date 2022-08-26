@@ -3,10 +3,10 @@ import { AuthMiddleware } from '../middlewares';
 import { Inject } from '@decorators/di';
 import { ColumnService } from '../services';
 import { TExpressResponse } from '../models';
-import { IColumn } from '../sequelize/models/Column';
 import { sendErrorResponse, sendJsonResponse } from '../utils/utils';
 import { MessagesToken } from '../InjectionTokens';
 import { TMessages } from '../MESSAGES';
+import { IColumn, IColumnToCreate } from '../../../CommonTypes';
 
 @Controller('/column', [AuthMiddleware])
 class ColumnController {
@@ -33,7 +33,7 @@ class ColumnController {
     @Post('/')
     async create(
         @Response() res: TExpressResponse<IColumn>,
-        @Body() payload: Partial<IColumn>
+        @Body() payload: IColumnToCreate
     ): Promise<void> {
         try {
             const newColumn = await this.columnService.create(payload);

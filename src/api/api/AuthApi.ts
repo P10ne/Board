@@ -1,6 +1,6 @@
 import BaseApi from '../BaseApi';
 import { API_PATH } from '../constants';
-import { IPublicUser } from '../../../server/src/models/IUser';
+import { IPublicUser } from '../../../CommonTypes';
 
 type TRefreshResponse = {
     accessToken: string;

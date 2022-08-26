@@ -1,8 +1,9 @@
+import { IUserToCreate } from '../../../CommonTypes';
+
 const { hashSync } = require('bcrypt');
 import { Inject, Injectable } from '@decorators/di';
 import { User } from '../sequelize/models';
 import { UserModelToken } from '../InjectionTokens';
-import { IUser } from '../models';
 
 @Injectable()
 class UsersService {
@@ -16,8 +17,8 @@ class UsersService {
         })
     }
 
-    async add(data: Partial<IUser>): Promise<User> {
-        const userDataToAdd: Partial<IUser> = {
+    async add(data: IUserToCreate): Promise<User> {
+        const userDataToAdd: IUserToCreate = {
             ...data,
             password: data.fromSocial ? '' : hashSync(data.password, 10)
         }
