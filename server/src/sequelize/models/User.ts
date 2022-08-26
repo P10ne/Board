@@ -1,8 +1,8 @@
 import { Column, DataType, Model, Table } from 'sequelize-typescript';
-import { IPublicUser, IUser, IUserToCreate } from '../../../../CommonTypes';
+import { IPublicUser, IUser, IDraftUser } from '../../../../src/CommonTypes';
 
 @Table({ timestamps: false })
-class User extends Model<IUser, IUserToCreate> implements IUser {
+class User extends Model<IUser, IDraftUser> implements IUser {
     @Column({
         type: DataType.INTEGER,
         primaryKey: true,

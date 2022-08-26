@@ -1,8 +1,8 @@
 import { Column, DataType, Model, Table } from 'sequelize-typescript';
-import { IBoard, IBoardToCreate } from '../../../../CommonTypes';
+import { IBoard, IDraftBoard } from '../../../../src/CommonTypes';
 
 @Table({ timestamps: false })
-class Board extends Model<IBoard, IBoardToCreate> implements IBoard {
+class Board extends Model<IBoard, IDraftBoard> implements IBoard {
     @Column({
         type: DataType.INTEGER,
         primaryKey: true,

@@ -7,7 +7,7 @@ import { IGoogleMe, TExpressRequest, TExpressResponse } from '../models';
 import { MessagesToken } from '../InjectionTokens';
 import { TMessages } from '../MESSAGES';
 import { User } from '../sequelize/models';
-import { IPublicUser, IUser, IUserToCreate } from '../../../CommonTypes';
+import { IPublicUser, IUser, IDraftUser } from '../../../src/CommonTypes';
 
 type TLoginRequestBody = {
     email: string;
@@ -34,7 +34,7 @@ type TGoogleLoginBody = {
     code: string;
 }
 
-type TRegRequestBody = IUserToCreate;
+type TRegRequestBody = IDraftUser;
 type TRegResponseBody = IPublicUser;
 
 @Controller('/auth')

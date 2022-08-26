@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@decorators/di';
 import { BoardModelToken } from '../InjectionTokens';
-import { IBoard } from '../../../CommonTypes';
+import { IBoard } from '../../../src/CommonTypes';
 import { Board } from '../sequelize/models';
 
 @Injectable()

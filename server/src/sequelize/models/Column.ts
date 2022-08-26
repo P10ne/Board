@@ -1,10 +1,10 @@
 import { Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
 import Board from './Board';
-import { IColumn, IColumnToCreate } from '../../../../CommonTypes';
+import { IColumn, IDraftColumn } from '../../../../src/CommonTypes';
 
 
 @Table({ timestamps: false, tableName: 'Column' })
-class ColumnModel extends Model<IColumn, IColumnToCreate> implements IColumn {
+class ColumnModel extends Model<IColumn, IDraftColumn> implements IColumn {
     @Column({
         type: DataType.INTEGER,
         primaryKey: true,

@@ -2,11 +2,10 @@ import { FC, useCallback, useEffect } from 'react';
 import classes from './Login.module.scss';
 import { Header, Content, Menu, Card, Col, Row, Button, Space } from '../../UI';
 import { LoginForm, SocialAuth, Socials, TLoginFormProps } from './components';
-import { useStore } from '../../hooks';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { TSocialAuthProps } from './components/Socials/Socials';
+import { useStore } from '../../shared';
 
 const Login: FC = () => {
     const { authByEmail, isAuthorized } = useStore(state => state.auth);

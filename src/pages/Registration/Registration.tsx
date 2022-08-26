@@ -1,8 +1,10 @@
 import { FC, useEffect, useState } from 'react';
 import { Button, Card, Col, Content, Header, Menu, Row, Space } from '../../UI';
 import { RegForm, TRegFormProps } from './components';
-import { authApi } from '../../api/api';
 import { useNavigate } from 'react-router-dom';
+import AuthApi from '../../api/api/AuthApi';
+
+const authApi = new AuthApi();
 
 const Registration: FC = () => {
     const [regSuccess, setRegSuccess] = useState(false);

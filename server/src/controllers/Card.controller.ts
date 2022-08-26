@@ -6,7 +6,7 @@ import { MessagesToken } from '../InjectionTokens';
 import { TMessages } from '../MESSAGES';
 import { TExpressResponse } from '../models';
 import { sendErrorResponse, sendJsonResponse } from '../utils/utils';
-import { ICard, IColumn } from '../../../CommonTypes';
+import { ICard, IColumn } from '../../../src/CommonTypes';
 
 @Controller('/card', [AuthMiddleware])
 class CardController {

@@ -1,8 +1,7 @@
 import { FC, useCallback } from 'react';
 import { Socials } from '../index';
 import { TSocialAuthProps } from '../Socials/Socials';
-import { useStore } from '../../../../hooks';
-import { GoogleOAuthProvider } from '@react-oauth/google';
+import { useStore } from '../../../../shared';
 
 const SocialAuth: FC = () => {
     const { authByGoogle } = useStore(state => state.auth);

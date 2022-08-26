@@ -1,6 +1,6 @@
 import BaseApi from '../BaseApi';
 import { API_PATH } from '../constants';
-import { IPublicUser } from '../../../CommonTypes';
+import { IPublicUser } from '../../CommonTypes';
 
 type TRefreshResponse = {
     accessToken: string;
@@ -78,4 +78,4 @@ class AuthApi extends BaseApi {
     }
 }
 
-export default new AuthApi();
+export default AuthApi;
