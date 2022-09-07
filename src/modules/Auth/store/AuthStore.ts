@@ -4,8 +4,8 @@ import AuthApi from '../../../api/api/AuthApi';
 import Fetcher from '../../../api/Fetcher';
 import type { IAuthApi } from '../api/AuthApi';
 import DI_TOKENS from '../di/Tokens';
-import { inject, injectable } from 'tsyringe';
 import 'reflect-metadata';
+import { Inject, Service } from 'typedi';
 
 type TAuthByGooglePayload = {
     code: string;
@@ -26,13 +26,13 @@ export interface IAuthStore {
     getAccessToken: () => string;
 }
 
-@injectable()
+@Service({ id: DI_TOKENS.Store })
 class AuthStore implements IAuthStore {
     @observable isAuthorized: boolean | null = null;
     @observable isRefreshing = false;
 
     constructor(
-        @inject(DI_TOKENS.Api) private authApi: IAuthApi
+        @Inject(DI_TOKENS.Api) private authApi: IAuthApi
     ) {
         makeObservable(this);
         Fetcher.AuthState = this;

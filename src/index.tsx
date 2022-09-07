@@ -22,9 +22,7 @@ const root = ReactDOM.createRoot(
 
 export const StoreContext = createContext<IRootStore>(rootStore);
 const authProviderProps: Omit<TAuthProviderProps, 'children'> = {
-    di: { regFn: container => {
-            container.register(DI_TOKENS.Api, { useClass: AuthApi });
-        } }
+
 }
 
 root.render(

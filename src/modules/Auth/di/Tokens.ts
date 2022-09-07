@@ -1,6 +1,8 @@
+import { Token } from 'typedi';
+
 const DI_TOKENS = {
-    Store: Symbol('store'),
-    Api: Symbol('api')
+    Store: new Token('store'),
+    Api: new Token('api')
 }
 
 export default DI_TOKENS;

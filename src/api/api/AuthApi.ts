@@ -7,7 +7,11 @@ import {
     TLoginResponse,
     TRefreshResponse, TRegistrationPayload, TRegistrationResponse
 } from '../../modules/Auth/api/AuthApi';
+import { Service } from 'typedi';
+import DI_TOKENS from '../../modules/Auth/di/Tokens';
 
+
+@Service({ id: DI_TOKENS.Api })
 class AuthApi extends BaseApi implements IAuthApi {
     constructor() {
         super({basePath: `${API_PATH}/auth`});

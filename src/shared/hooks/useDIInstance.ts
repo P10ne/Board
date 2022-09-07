@@ -1,10 +1,11 @@
-import { DependencyContainer, InjectionToken } from 'tsyringe';
 import 'reflect-metadata';
 import { Context, useContext } from 'react';
+import { Container, Token } from 'typedi';
 
-const useDIInstance: <TInstance, TContext extends { diContainer: DependencyContainer }>(token: InjectionToken, context: Context<TContext>) => TInstance = (token, context) => {
+const useDIInstance: <TInstance, TContext extends { diContainer: Container }>(token: Token<any>, context: Context<TContext>) => TInstance = (token, context) => {
     const foundContext = useContext(context);
-    const instance = foundContext.diContainer.resolve(token);
+    // @ts-ignore
+    const instance = foundContext.diContainer.get(token);
     return instance;
 };
 
