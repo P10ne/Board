@@ -1,12 +1,14 @@
-import { IAuthStore } from '../../../store/auth/AuthStore';
+import { IAuthStore } from '../store/AuthStore';
 import { createContext } from 'react';
+import 'reflect-metadata';
+import { DependencyContainer } from 'tsyringe';
 
 export type TMainAuthContext = {
-    auth: IAuthStore;
+    diContainer: DependencyContainer;
 }
 
 export const AuthMainContext = createContext<TMainAuthContext>({
-    auth: {} as IAuthStore
+    diContainer: {} as DependencyContainer
 })
 
 export default AuthMainContext;

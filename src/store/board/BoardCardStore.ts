@@ -1,13 +1,9 @@
 import {
-    ICard,
-    IDraftCard,
-    IColumn,
     isColumn,
     isDraftCard,
-    IDraftColumn,
-    isDraftColumn,
     TPartialDraftCard
 } from '../../CommonTypes';
+import type { ICard, IDraftCard } from '../../CommonTypes';
 import CrudStatus from '../CrudStatus';
 import { flow, makeObservable, observable } from 'mobx';
 import BoardCardApi from '../../api/api/BoardCardApi';

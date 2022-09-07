@@ -1,7 +1,11 @@
-import { action, flow, flowResult, makeObservable, observable } from 'mobx';
+import { flow, makeObservable, observable } from 'mobx';
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
-import AuthApi from '../../api/api/AuthApi';
-import Fetcher from '../../api/Fetcher';
+import AuthApi from '../../../api/api/AuthApi';
+import Fetcher from '../../../api/Fetcher';
+import type { IAuthApi } from '../api/AuthApi';
+import DI_TOKENS from '../di/Tokens';
+import { inject, injectable } from 'tsyringe';
+import 'reflect-metadata';
 
 type TAuthByGooglePayload = {
     code: string;
@@ -22,13 +26,14 @@ export interface IAuthStore {
     getAccessToken: () => string;
 }
 
-const authApi = new AuthApi();
-
+@injectable()
 class AuthStore implements IAuthStore {
     @observable isAuthorized: boolean | null = null;
     @observable isRefreshing = false;
 
-    constructor() {
+    constructor(
+        @inject(DI_TOKENS.Api) private authApi: IAuthApi
+    ) {
         makeObservable(this);
         Fetcher.AuthState = this;
     }
@@ -65,7 +70,7 @@ class AuthStore implements IAuthStore {
             return;
         }
         const fingerPrint: Awaited<ReturnType<InstanceType<typeof AuthStore>['getFingerPrint']>> = yield this.getFingerPrint();
-        const refreshResponse: Awaited<ReturnType<typeof authApi.refresh>> = yield authApi.refresh(refreshToken, fingerPrint);
+        const refreshResponse: Awaited<ReturnType<InstanceType<typeof AuthApi>['refresh']>> = yield this.authApi.refresh(refreshToken, fingerPrint);
         if (!refreshResponse) {
             this.isAuthorized = false;
             this.isRefreshing = false;
@@ -81,7 +86,7 @@ class AuthStore implements IAuthStore {
     @flow
     * authByGoogle(data: TAuthByGooglePayload) {
         const fingerPrint:  Awaited<ReturnType<InstanceType<typeof AuthStore>['getFingerPrint']>> = yield this.getFingerPrint();
-        const { accessToken, refreshToken }: Awaited<ReturnType<typeof authApi.loginGoogle>> = yield authApi.loginGoogle({ ...data, fingerPrint });
+        const { accessToken, refreshToken }: Awaited<ReturnType<InstanceType<typeof AuthApi>['loginGoogle']>> = yield this.authApi.loginGoogle({ ...data, fingerPrint });
         this.setAccessToken(accessToken);
         this.setRefreshToken(refreshToken);
         this.isAuthorized = true;
@@ -91,7 +96,7 @@ class AuthStore implements IAuthStore {
     * authByEmail(data: TAuthByEmailPayload) {
         const fingerPrint: Awaited<ReturnType<InstanceType<typeof AuthStore>['getFingerPrint']>> = yield this.getFingerPrint();
 
-        const { accessToken, refreshToken }: Awaited<ReturnType<typeof authApi.login>> = yield authApi.login({
+        const { accessToken, refreshToken }: Awaited<ReturnType<InstanceType<typeof AuthApi>['login']>> = yield this.authApi.login({
             ...data,
             fingerPrint
         });

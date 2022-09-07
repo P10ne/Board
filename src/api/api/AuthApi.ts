@@ -1,35 +1,16 @@
 import BaseApi from '../BaseApi';
 import { API_PATH } from '../constants';
-import { IPublicUser } from '../../CommonTypes';
+import {
+    IAuthApi,
+    TLoginGooglePayload,
+    TLoginPayload,
+    TLoginResponse,
+    TRefreshResponse, TRegistrationPayload, TRegistrationResponse
+} from '../../modules/Auth/api/AuthApi';
 
-type TRefreshResponse = {
-    accessToken: string;
-    refreshToken: string;
-}
-
-type TLoginResponse = TRefreshResponse;
-
-type TLoginPayload = {
-    email: string;
-    password: string;
-    fingerPrint: string;
-}
-
-type TLoginGooglePayload = {
-    code: string;
-    fingerPrint: string;
-}
-
-type TRegistrationPayload = {
-    email: string;
-    password: string;
-}
-
-type TRegistrationResponse = IPublicUser;
-
-class AuthApi extends BaseApi {
+class AuthApi extends BaseApi implements IAuthApi {
     constructor() {
-        super({ basePath: `${API_PATH}/auth` });
+        super({basePath: `${API_PATH}/auth`});
     }
 
     async loginGoogle(data: TLoginGooglePayload): Promise<TLoginResponse> {
@@ -40,6 +21,7 @@ class AuthApi extends BaseApi {
             throw e;
         }
     }
+
 
     async login(data: TLoginPayload): Promise<TLoginResponse> {
         try {

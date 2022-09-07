@@ -1,11 +1,12 @@
-import { IBoard, IColumn, IDraftColumn, isBoard, isColumn, isDraftColumn } from '../../CommonTypes';
-import { IBoardCardStore } from './BoardCardStore';
+import { isBoard, isColumn, isDraftColumn } from '../../CommonTypes';
 import CrudStatus from '../CrudStatus';
 import { action, flow, makeObservable, observable } from 'mobx';
 import BoardColumnApi from '../../api/api/BoardColumnApi';
-import BoardCardsListStore, { IBoardCardsListStore } from './BoardCardsListStore';
-import { IBoardColumnsListStore } from './BoardColumnsListStore';
-import { TPartialDraftColumn } from '../../CommonTypes/IColumn';
+import type { IBoardColumnsListStore } from './BoardColumnsListStore';
+import type { TPartialDraftColumn, IColumn, IDraftColumn } from '../../CommonTypes';
+import BoardCardsListStore from './BoardCardsListStore';
+import type { IBoardCardsListStore } from './BoardCardsListStore'
+import type { IBoardCardStore } from './BoardCardStore';
 
 export interface IBoardColumnStore {
     attributes: IColumn | IDraftColumn;
@@ -15,6 +16,7 @@ export interface IBoardColumnStore {
     updateDraftAttributes: (data: IDraftColumn) => void;
     update: (column: IBoardColumnStore['attributes']) => void;
     delete: () => void;
+
     deleteCardFromStore(card: IBoardCardStore): void;
 }
 
@@ -40,7 +42,7 @@ class BoardColumnStore implements IBoardColumnStore {
                 name: '',
                 boardId: board.id
             };
-            return { ...defaultColumnAttributes, ...data };
+            return {...defaultColumnAttributes, ...data};
         } else {
             throw new Error('Board must not be draft');
         }
@@ -48,7 +50,7 @@ class BoardColumnStore implements IBoardColumnStore {
 
     updateDraftAttributes(data: TPartialDraftColumn) {
         if (isDraftColumn(this.attributes)) {
-            this.attributes = {...this.attributes, ...data };
+            this.attributes = {...this.attributes, ...data};
         } else {
             throw new Error('You can only change attributes of a draft column');
         }

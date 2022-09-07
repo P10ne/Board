@@ -1,15 +1,13 @@
 import { makeObservable, observable } from 'mobx';
-import AuthStore, { IAuthStore } from './auth/AuthStore';
+import AuthStore, { IAuthStore } from '../modules/Auth/store/AuthStore';
 import BoardStore, { IBoardStore } from './board/BoardStore';
 
 export interface IRootStore {
     board: IBoardStore;
-    auth: IAuthStore;
 }
 
 class RootStore implements IRootStore {
     @observable board = new BoardStore();
-    @observable auth = new AuthStore();
 
     constructor() {
         makeObservable(this);

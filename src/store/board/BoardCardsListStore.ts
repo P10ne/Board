@@ -1,9 +1,11 @@
 import FetchingStatus from '../FetchingStatus';
 import { action, flow, makeObservable, observable } from 'mobx';
-import BoardCardStore, { IBoardCardStore } from './BoardCardStore';
 import BoardCardApi from '../../api/api/BoardCardApi';
-import { isCard, isColumn, isDraftCard, TPartialDraftCard } from '../../CommonTypes';
+import { isCard, isColumn, isDraftCard } from '../../CommonTypes';
+import type { TPartialDraftCard } from '../../CommonTypes';
 import { IBoardColumnStore } from './BoardColumnStore';
+import BoardCardStore  from './BoardCardStore';
+import type { IBoardCardStore } from './BoardCardStore';
 
 export interface IBoardCardsListStore {
     status: FetchingStatus;

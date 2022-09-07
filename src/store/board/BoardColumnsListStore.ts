@@ -1,11 +1,13 @@
 import FetchingStatus from '../FetchingStatus';
-import BoardColumnStore, { IBoardColumnStore } from './BoardColumnStore';
 import { action, computed, flow, makeObservable, observable } from 'mobx';
 import { IBoardStore } from './BoardStore';
 import BoardColumnApi from '../../api/api/BoardColumnApi';
-import { isBoard, isColumn, TPartialDraftColumn } from '../../CommonTypes';
+import { isBoard } from '../../CommonTypes';
+import type { TPartialDraftColumn } from '../../CommonTypes';
+import BoardColumnStore from './BoardColumnStore';
+import type { IBoardColumnStore } from './BoardColumnStore';
 
-export interface IBoardColumnsListStore {
+interface IBoardColumnsListStore {
     status: FetchingStatus;
     data: IBoardColumnStore[];
     boardStore: IBoardStore;
@@ -59,6 +61,10 @@ class BoardColumnsListStore implements IBoardColumnsListStore {
     deleteColumnFromList(column: IBoardColumnStore) {
         this.data = this.data.filter(col => col !== column);
     }
+}
+
+export type  {
+    IBoardColumnsListStore
 }
 
 export default BoardColumnsListStore;

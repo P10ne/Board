@@ -5,20 +5,26 @@ import { LoginForm, SocialAuth, TLoginFormProps } from '../../modules/Auth';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { useStore } from '../../shared';
+import { useContextSelector } from '../../shared';
+import AuthMainContext from '../../modules/Auth/contexts/AuthMainContext';
+import useAuthDiInstance from '../../modules/Auth/hooks/useAuthDiInstance';
+import DI_TOKENS from '../../modules/Auth/di/Tokens';
+import { IAuthStore } from '../../modules/Auth/store/AuthStore';
+import useAuthStore from '../../modules/Auth/hooks/useAuthStore';
 
 const Login: FC = () => {
-    const { authByEmail, isAuthorized } = useStore(state => state.auth);
+    const auth = useAuthStore();
     const navigate = useNavigate();
+    console.log(auth.isAuthorized, auth);
 
     useEffect(() => {
-        if (isAuthorized) {
+        if (auth.isAuthorized) {
             navigate('/board/1');
         }
-    }, [isAuthorized]);
+    }, [auth.isAuthorized]);
 
     const onEmailAuth = useCallback<TLoginFormProps['onEmailAuth']>(({ email, password }) => {
-        authByEmail({ email, password });
+        auth.authByEmail({ email, password });
     }, []);
 
     const goToSignIn = () => {

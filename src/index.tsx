@@ -7,20 +7,29 @@ import reportWebVitals from './reportWebVitals';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import rootStore, { IRootStore } from './store';
-import { AuthProvider, TMainAuthContext } from './modules/Auth';
+import { AuthProvider } from './modules/Auth';
+import { TAuthProviderProps } from './modules/Auth/components/AuthProvider/AuthProvider';
+import 'reflect-metadata';
+import DI_TOKENS from './modules/Auth/di/Tokens';
+import AuthApi from './api/api/AuthApi';
+import AuthStore from './modules/Auth/store/AuthStore';
+import { autorun, reaction } from 'mobx';
+import authApi from './api/api/AuthApi';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
 export const StoreContext = createContext<IRootStore>(rootStore);
-const authContextValue: TMainAuthContext = {
-    auth: rootStore.auth
+const authProviderProps: Omit<TAuthProviderProps, 'children'> = {
+    di: { regFn: container => {
+            container.register(DI_TOKENS.Api, { useClass: AuthApi });
+        } }
 }
 
 root.render(
     <StoreContext.Provider value={rootStore}>
-        <AuthProvider contextValue={authContextValue}>
+        <AuthProvider { ...authProviderProps }>
             <DndProvider backend={HTML5Backend}>
                 <App />
             </DndProvider>

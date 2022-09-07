@@ -1,10 +1,8 @@
-import { IBoard, IDraftBoard, IColumn } from '../../CommonTypes';
-import FetchingStatus from '../FetchingStatus';
-import BoardColumnStore, { IBoardColumnStore } from './BoardColumnStore';
+import { IBoard, IDraftBoard } from '../../CommonTypes';
 import { flow, makeObservable, observable } from 'mobx';
 import BoardApi from '../../api/api/BoardApi';
-import BoardColumnApi from '../../api/api/BoardColumnApi';
-import BoardColumnsListStore, { IBoardColumnsListStore } from './BoardColumnsListStore';
+import BoardColumnsListStore from './BoardColumnsListStore';
+import type { IBoardColumnsListStore } from './BoardColumnsListStore';
 import CrudStatus from '../CrudStatus';
 
 export interface IBoardStore {

@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { IAuthStore } from '../store/auth/AuthStore';
+import { IAuthStore } from '../modules/Auth/store/AuthStore';
 
 type TRequestConfig<T> = AxiosRequestConfig<T>;
 type TResponse<T> = AxiosResponse<T>;
