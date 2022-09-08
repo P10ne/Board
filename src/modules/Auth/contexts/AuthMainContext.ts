@@ -1,14 +1,12 @@
-import { IAuthStore } from '../store/AuthStore';
 import { createContext } from 'react';
-import 'reflect-metadata';
-import { Container } from 'typedi';
+import { DependencyContainer } from '../../../packages/react-module-di';
 
-export type TMainAuthContext = {
-    diContainer: Container;
+export type TMainAuthContextValue = {
+    diContainer: DependencyContainer;
 }
 
-export const AuthMainContext = createContext<TMainAuthContext>({
-    diContainer: {} as Container
+export const AuthMainContext = createContext<TMainAuthContextValue>({
+    diContainer: {} as DependencyContainer
 })
 
 export default AuthMainContext;

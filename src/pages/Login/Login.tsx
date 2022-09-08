@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect } from 'react';
+import { FC, useCallback, useContext, useEffect, useMemo } from 'react';
 import classes from './Login.module.scss';
 import { Header, Content, Menu, Card, Col, Row, Button, Space } from '../../UI';
 import { LoginForm, SocialAuth, TLoginFormProps } from '../../modules/Auth';
@@ -7,21 +7,19 @@ import { observer } from 'mobx-react-lite';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { useContextSelector } from '../../shared';
 import AuthMainContext from '../../modules/Auth/contexts/AuthMainContext';
-import useAuthDiInstance from '../../modules/Auth/hooks/useAuthDiInstance';
-import DI_TOKENS from '../../modules/Auth/di/Tokens';
-import { IAuthStore } from '../../modules/Auth/store/AuthStore';
 import useAuthStore from '../../modules/Auth/hooks/useAuthStore';
+import { when } from 'mobx';
 
 const Login: FC = () => {
     const auth = useAuthStore();
     const navigate = useNavigate();
-    console.log(auth.isAuthorized, auth);
 
     useEffect(() => {
-        if (auth.isAuthorized) {
-            navigate('/board/1');
-        }
-    }, [auth.isAuthorized]);
+        when(
+            () => !!auth.isAuthorized,
+            () => navigate('/board/1')
+        )
+    }, []);
 
     const onEmailAuth = useCallback<TLoginFormProps['onEmailAuth']>(({ email, password }) => {
         auth.authByEmail({ email, password });

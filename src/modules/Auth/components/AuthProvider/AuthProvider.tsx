@@ -1,48 +1,27 @@
-import { FC, ReactNode, useMemo } from 'react';
-import AuthMainContext, { TMainAuthContext } from '../../contexts/AuthMainContext';
-import 'reflect-metadata';
-import DI_TOKENS from '../../di/Tokens';
-import AuthStore from '../../store/AuthStore';
+import { FC, useMemo, useState } from 'react';
+import AuthMainContext, { TMainAuthContextValue } from '../../contexts/AuthMainContext';
+import AUTH_DI_TOKENS from '../../AUTH_DI_TOKENS';
+import AuthStore, { IAuthStore } from '../../store/AuthStore';
 import { observer } from 'mobx-react-lite';
-import { Container } from 'typedi';
 import AuthApi from '../../../../api/api/AuthApi';
+import type { IModuleProviderBaseProps } from '../../../../packages/react-module-di';
+import type { TDependenciesConfig } from '../../../../packages/react-module-di/utils/registerDependencies';
+import createModuleDIContainer from '../../../../packages/react-module-di/utils/createModuleDIContainer';
 
-export type TAuthProviderProps = {
-    // di: {
-    //     parentContainer?: DependencyContainer;
-    //     regFn: (container: DependencyContainer) => void;
-    // }
-    children: ReactNode;
-}
+export type TAuthProviderProps = IModuleProviderBaseProps & {}
 
-// type TDependencies = {
-//     token: typeof DI_TOKENS[keyof typeof DI_TOKENS];
-//     fn: (container: DependencyContainer) => void;
-// }[]
-//
-// const defaultDependencies: TDependencies = [
-//     { token: DI_TOKENS.Store, fn: c => c.register(DI_TOKENS.Store, AuthStore) }
-// ]
+const AuthProvider: FC<TAuthProviderProps> = ({ di, children }) => {
+    const [defaultDependencies] = useState<TDependenciesConfig>(() => ([
+        { token: AUTH_DI_TOKENS.Store, regFn: c => c.registerSingleton(AUTH_DI_TOKENS.Store, AuthStore) },
+        { token: AUTH_DI_TOKENS.Api, regFn: c => c.registerSingleton(AUTH_DI_TOKENS.Api, AuthApi) }
+    ]));
 
-const AuthProvider: FC<TAuthProviderProps> = ({ children }) => {
-    const moduleDiContainer = useMemo(() => {
-        // di.regFn(moduleContainer);
-        // defaultDependencies.forEach(item => {
-        //     if (!container.isRegistered(item.token)) {
-        //         item.fn(moduleContainer);
-        //     }
-        // })
-        Container.import([AuthStore, AuthApi]);
-        Container.bind(DI_TOKENS.Store, AuthStore);
-        Container.bind(DI_TOKENS.Api, AuthApi);
-        return Container;
-    }, []);
+    const diContainer = useMemo(() => createModuleDIContainer({
+        moduleDIConfig: di,
+        defaultConfig: defaultDependencies
+    }), [di, defaultDependencies]);
 
-    const contextValue: TMainAuthContext = useMemo(() => {
-        return {
-            diContainer: moduleDiContainer
-        }
-    }, [moduleDiContainer]);
+    const contextValue: TMainAuthContextValue = useMemo(() => ({ diContainer: diContainer }), [diContainer]);
 
     return (
         <AuthMainContext.Provider value={contextValue}>

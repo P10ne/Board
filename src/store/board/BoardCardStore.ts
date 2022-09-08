@@ -7,7 +7,6 @@ import type { ICard, IDraftCard } from '../../CommonTypes';
 import CrudStatus from '../CrudStatus';
 import { flow, makeObservable, observable } from 'mobx';
 import BoardCardApi from '../../api/api/BoardCardApi';
-import BoardColumnStore, { IBoardColumnStore } from './BoardColumnStore';
 import { IBoardCardsListStore } from './BoardCardsListStore';
 
 export interface IBoardCardStore {

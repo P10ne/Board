@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import 'antd/dist/antd.min.css';
 import React, { createContext } from 'react';
 import ReactDOM from 'react-dom/client';
@@ -9,8 +10,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import rootStore, { IRootStore } from './store';
 import { AuthProvider } from './modules/Auth';
 import { TAuthProviderProps } from './modules/Auth/components/AuthProvider/AuthProvider';
-import 'reflect-metadata';
-import DI_TOKENS from './modules/Auth/di/Tokens';
+import AUTH_DI_TOKENS from './modules/Auth/AUTH_DI_TOKENS';
 import AuthApi from './api/api/AuthApi';
 import AuthStore from './modules/Auth/store/AuthStore';
 import { autorun, reaction } from 'mobx';

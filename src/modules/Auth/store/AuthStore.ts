@@ -3,9 +3,8 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs';
 import AuthApi from '../../../api/api/AuthApi';
 import Fetcher from '../../../api/Fetcher';
 import type { IAuthApi } from '../api/AuthApi';
-import DI_TOKENS from '../di/Tokens';
-import 'reflect-metadata';
-import { Inject, Service } from 'typedi';
+import AUTH_DI_TOKENS from '../AUTH_DI_TOKENS';
+import { inject, injectable } from '../../../packages/react-module-di';
 
 type TAuthByGooglePayload = {
     code: string;
@@ -26,13 +25,13 @@ export interface IAuthStore {
     getAccessToken: () => string;
 }
 
-@Service({ id: DI_TOKENS.Store })
+@injectable()
 class AuthStore implements IAuthStore {
     @observable isAuthorized: boolean | null = null;
     @observable isRefreshing = false;
 
     constructor(
-        @Inject(DI_TOKENS.Api) private authApi: IAuthApi
+        @inject(AUTH_DI_TOKENS.Api) private authApi: IAuthApi
     ) {
         makeObservable(this);
         Fetcher.AuthState = this;
