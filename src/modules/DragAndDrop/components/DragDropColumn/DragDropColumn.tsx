@@ -4,7 +4,7 @@ import { EDraggableItems, TDragCardItem, TDropCardResult } from '../../types';
 import BoardColumnItem from '../../../Board/components/BoardColumn/BoardColumn';
 import { observer } from 'mobx-react-lite';
 import MoveCardContext from '../../contexts/MoveCardContext';
-import { IBoardColumnStore } from '../../../../store/board/BoardColumnStore';
+import { IBoardColumnStore } from '../../../Board/store/BoardColumnStore';
 
 type TDragDropColumnProps = {
     columnData: IBoardColumnStore;

@@ -2,11 +2,11 @@ import { FC, useContext, useRef } from 'react';
 import MoveCardContext from '../../contexts/MoveCardContext';
 import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
 import { EDraggableItems, TDragCardItem, TDropCardResult } from '../../types';
-import BoardCard from '../../../BoardCard/components/BoardCardShort/BoardCardShort';
+import BoardCard from '../../../Board/components/BoardCardShort/BoardCardShort';
 import classes from './DragDropCard.module.scss';
 import { observer } from 'mobx-react-lite';
 import { ICard, IColumn } from '../../../../CommonTypes';
-import { IBoardCardStore } from '../../../../store/board/BoardCardStore';
+import { IBoardCardStore } from '../../../Board/store/BoardCardStore';
 
 type TDragCollectedProps = {
     isDragging: boolean;

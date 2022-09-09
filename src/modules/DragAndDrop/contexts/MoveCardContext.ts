@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { IBoardCardStore } from '../../../store/board/BoardCardStore';
+import { IBoardCardStore } from '../../Board/store/BoardCardStore';
 import { IColumn } from '../../../CommonTypes';
 
 export type TMoveCardContext = {

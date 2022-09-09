@@ -8,11 +8,12 @@ import { DragDropColumn } from '../../../DragAndDrop';
 import { useContextSelector } from '../../../../shared';
 import BoardColumnItem from '../../../Board/components/BoardColumn/BoardColumn';
 import { isColumn } from '../../../../CommonTypes';
+import useBoardStore from '../../hooks/useBoardStore';
 
 type TBoardColumnsProps = {}
 
 const BoardColumns: FC<TBoardColumnsProps> = () => {
-    const columnsList = useContextSelector(BoardMainContext, v => v.board?.columnsList);
+    const columnsList = useBoardStore(v => v.columnsList);
     if (!columnsList) return null;
     return (
         <div className={classes.container}>

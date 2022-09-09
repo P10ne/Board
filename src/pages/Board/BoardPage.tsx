@@ -1,22 +1,18 @@
-import { FC, useContext, useEffect } from 'react';
+import { FC } from 'react';
 import { useParams } from 'react-router-dom';
 import { Content, Header, Menu } from '../../UI';
 import classes from './BoardPage.module.scss';
 import { observer } from 'mobx-react-lite';
-import { TMainBoardContext } from '../../modules/Board';
-import BoardProvider from '../../modules/Board/components/BoardProvider/BoardProvider';
+import BoardProvider, { TBoardProviderProps } from '../../modules/Board/components/BoardProvider/BoardProvider';
 import { Board } from '../../modules/Board';
-import { useStore } from '../../shared';
 
 const BoardPage: FC = () => {
     const { id: boardId } = useParams<{id: string}>();
-    const boardStore = useStore(v => v.board);
 
     if (typeof boardId === 'undefined') return <p>BoardId is wrong</p>;
 
-    const contextValue: TMainBoardContext = {
-        board: boardStore,
-        boardId: Number(boardId)
+    const boardProviderProps: Omit<TBoardProviderProps, 'children'> = {
+        boardId: Number(boardId),
     }
 
     return (
@@ -28,7 +24,7 @@ const BoardPage: FC = () => {
                 />
             </Header>
             <Content className={classes.Board__content}>
-                <BoardProvider contextValue={contextValue}>
+                <BoardProvider {...boardProviderProps}>
                     <Board />
                 </BoardProvider>
             </Content>

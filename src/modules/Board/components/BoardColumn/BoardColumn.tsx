@@ -3,12 +3,11 @@ import classes from './BoardColumn.module.scss';
 import { observer } from 'mobx-react-lite';
 import { Button, Card, Dropdown, Menu, Typography } from '../../../../UI';
 import { MoreOutlined } from '../../../../icons';
-import { DragDropCard } from '../../../DragAndDrop';
 import { BoardCardModal } from '../../../BoardCard';
-import { IDraftCard, isCard } from '../../../../CommonTypes';
-import { IBoardColumnStore } from '../../../../store/board/BoardColumnStore';
-import BoardCard from '../../../BoardCard/components/BoardCardShort/BoardCardShort';
-import { IBoardCardStore } from '../../../../store/board/BoardCardStore';
+import { isCard, TPartialCard } from '../../../../CommonTypes';
+import { IBoardColumnStore } from '../../store/BoardColumnStore';
+import BoardCard from '../BoardCardShort/BoardCardShort';
+import { IBoardCardStore } from '../../store/BoardCardStore';
 
 const { Paragraph } = Typography;
 
@@ -37,7 +36,7 @@ const BoardColumn: FC<BoardColumnItemProps> = ({ columnData }) => {
     }
 
     const onAddCardClick = () => {
-        const cardForCreate = columnData.cards.createDraftCard(null, false);
+        const cardForCreate = columnData.cards.createDraftCard({}, false);
         if (!cardForCreate) return;
         newCardRef.current = cardForCreate;
         setIsCardModalVisible(true);
@@ -47,14 +46,13 @@ const BoardColumn: FC<BoardColumnItemProps> = ({ columnData }) => {
         setIsCardModalVisible(false);
     }
 
-    const submitAddCardHandler = (data: IDraftCard) => {
+    const submitAddCardHandler = (data: TPartialCard) => {
         setIsCardModalVisible(false);
         const card = newCardRef.current!;
         card.updateDraftAttributes(data);
         columnData.cards.addDraftCardToList(card);
         card.createFromDraft();
     }
-
 
     const menu = (
         <Menu
@@ -112,7 +110,10 @@ const BoardColumn: FC<BoardColumnItemProps> = ({ columnData }) => {
                     //     index={index}
                     //     key={card.attributes.id}
                     // />)
-                    <BoardCard card={card} key={isCard(card.attributes) ? card.attributes.id : `draft-${index}`} />
+                    <BoardCard
+                        card={card}
+                        key={isCard(card.attributes) ? card.attributes.id : `draft-${index}`}
+                    />
                 )
             }
         </Card>

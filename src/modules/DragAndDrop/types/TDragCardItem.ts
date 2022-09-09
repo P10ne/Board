@@ -1,5 +1,5 @@
 import { ICard, IColumn } from '../../../CommonTypes';
-import { IBoardCardStore } from '../../../store/board/BoardCardStore';
+import { IBoardCardStore } from '../../Board/store/BoardCardStore';
 
 export type TDragCardItem = {
     id: ICard['id'];

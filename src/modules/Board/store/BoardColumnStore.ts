@@ -1,56 +1,48 @@
-import { isBoard, isColumn, isDraftColumn } from '../../CommonTypes';
-import CrudStatus from '../CrudStatus';
+import { isColumn } from '../../../CommonTypes';
+import CrudStatus from '../../../store/CrudStatus';
 import { action, flow, makeObservable, observable } from 'mobx';
-import BoardColumnApi from '../../api/api/BoardColumnApi';
 import type { IBoardColumnsListStore } from './BoardColumnsListStore';
-import type { TPartialDraftColumn, IColumn, IDraftColumn } from '../../CommonTypes';
-import BoardCardsListStore from './BoardCardsListStore';
+import type { TPartialColumn, IColumn } from '../../../CommonTypes';
 import type { IBoardCardsListStore } from './BoardCardsListStore'
 import type { IBoardCardStore } from './BoardCardStore';
+import type { DependencyContainer } from '../../../packages/react-module-di';
+import { inject, injectable } from '../../../packages/react-module-di';
+import BOARD_DI_TOKENS from '../BOARD_DI_TOKENS';
+import type { IBoardColumnApi } from '../api/BoardColumnApi';
+import GLOBAL_DI_TOKENS from '../../../packages/react-module-di/GLOBAL_DI_TOKENS';
 
 export interface IBoardColumnStore {
-    attributes: IColumn | IDraftColumn;
+    attributes: TPartialColumn;
     crudStatus: CrudStatus;
     cards: IBoardCardsListStore;
     createFromDraft: () => void;
-    updateDraftAttributes: (data: IDraftColumn) => void;
+    updateDraftAttributes: (data: IBoardColumnStore['attributes']) => void;
     update: (column: IBoardColumnStore['attributes']) => void;
     delete: () => void;
-
     deleteCardFromStore(card: IBoardCardStore): void;
 }
 
-const boardColumnApi = new BoardColumnApi();
-
+@injectable()
 class BoardColumnStore implements IBoardColumnStore {
-    @observable attributes: IColumn | IDraftColumn;
+    @observable attributes: TPartialColumn;
     crudStatus = new CrudStatus();
     @observable cards: IBoardCardsListStore;
-    private boardColumnsListStore: IBoardColumnsListStore;
 
-    constructor(data: IColumn | TPartialDraftColumn | null, boardColumnsListStore: IBoardColumnsListStore) {
+    constructor(
+        @inject(GLOBAL_DI_TOKENS.DIContainer) private diContainer: DependencyContainer,
+        @inject(BOARD_DI_TOKENS.ColumnsListStore) private boardColumnsListStore: IBoardColumnsListStore,
+        @inject(BOARD_DI_TOKENS.ColumnApi) private boardColumnApi: IBoardColumnApi
+    ) {
         makeObservable(this);
-        this.boardColumnsListStore = boardColumnsListStore;
-        this.attributes = this.getDraftColumnAttributes(data);
-        this.cards = new BoardCardsListStore(this);
+        this.attributes = {};
+        this.cards = this.diContainer.resolve<IBoardCardsListStore>(BOARD_DI_TOKENS.CardsListStore);
+        this.cards.columnStore = this;
+        this.cards.fetch();
     }
 
-    private getDraftColumnAttributes(data: IColumn | TPartialDraftColumn | null): IColumn | IDraftColumn {
-        const board = this.boardColumnsListStore.boardStore.attributes;
-        if (isBoard(board)) {
-            const defaultColumnAttributes: IDraftColumn = {
-                name: '',
-                boardId: board.id
-            };
-            return {...defaultColumnAttributes, ...data};
-        } else {
-            throw new Error('Board must not be draft');
-        }
-    }
-
-    updateDraftAttributes(data: TPartialDraftColumn) {
-        if (isDraftColumn(this.attributes)) {
-            this.attributes = {...this.attributes, ...data};
+    updateDraftAttributes(data: TPartialColumn) {
+        if (!isColumn(this.attributes)) {
+            this.attributes = {...{ boardId: this.boardColumnsListStore.boardStore?.attributes.id }, ...this.attributes, ...data};
         } else {
             throw new Error('You can only change attributes of a draft column');
         }
@@ -62,17 +54,17 @@ class BoardColumnStore implements IBoardColumnStore {
     }
 
     private async updateOnServer(data: IColumn): Promise<IColumn> {
-        return boardColumnApi.update(data);
+        return this.boardColumnApi.update(data);
     }
 
-    private async createOnServer(data: IDraftColumn): Promise<IColumn> {
-        return boardColumnApi.create(data);
+    private async createOnServer(data: TPartialColumn): Promise<IColumn> {
+        return this.boardColumnApi.create(data);
     }
 
     @flow
     * createFromDraft() {
         const column = this.attributes;
-        if (isDraftColumn(column)) {
+        if (!isColumn(column)) {
             try {
                 this.crudStatus.creating.isFetching = true;
                 const createdColumn: Awaited<ReturnType<InstanceType<typeof BoardColumnStore>['createOnServer']>> = yield this.createOnServer(column);
@@ -105,7 +97,7 @@ class BoardColumnStore implements IBoardColumnStore {
     private async deleteFromServer(): Promise<void> {
         const column = this.attributes;
         if (isColumn(column)) {
-            await boardColumnApi.delete(column.id);
+            await this.boardColumnApi.delete(column.id);
         }
     }
 

@@ -3,18 +3,18 @@ import classes from './BoardCardModal.module.scss';
 import { useFormik } from 'formik';
 import BoardCardForm from '../BoardCardForm/BoardCardForm';
 import { Modal } from '../../../../UI';
-import { IDraftCard } from '../../../../CommonTypes';
-import { IBoardCardStore } from '../../../../store/board/BoardCardStore';
+import { IBoardCardStore } from '../../store/BoardCardStore';
+import { TPartialCard } from '../../../../CommonTypes';
 
 type TNewCardProps = {
     card: IBoardCardStore;
     isModalVisible: boolean;
     cancelHandler: () => void;
-    submitHandler: (card: IDraftCard) => void;
+    submitHandler: (card: TPartialCard) => void;
 }
 
 const BoardCardModal: FC<TNewCardProps> = ({ card, isModalVisible, cancelHandler, submitHandler }) => {
-    const formik = useFormik<IDraftCard>({
+    const formik = useFormik<TPartialCard>({
         initialValues: card.attributes,
         onSubmit: async values => {
             submitHandler(values);

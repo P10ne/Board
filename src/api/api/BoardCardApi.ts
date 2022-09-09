@@ -1,6 +1,6 @@
 import BaseApi from '../BaseApi';
 import { API_PATH } from '../constants';
-import { ICard, IColumn, IDraftCard } from '../../CommonTypes';
+import { ICard, IColumn, TPartialCard } from '../../CommonTypes';
 
 class BoardCardApi extends BaseApi {
     constructor() {
@@ -28,9 +28,9 @@ class BoardCardApi extends BaseApi {
     //     }
     // }
 
-    async create(data: IDraftCard): Promise<ICard> {
+    async create(data: TPartialCard): Promise<ICard> {
         try {
-            const response = await this.fetcher.post<ICard, IDraftCard>('/', data);
+            const response = await this.fetcher.post<ICard, TPartialCard>('/', data);
             return response.data;
         } catch (e) {
             throw e;

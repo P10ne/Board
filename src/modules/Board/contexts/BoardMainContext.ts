@@ -1,15 +1,15 @@
 import { createContext } from 'react';
-import { IBoardStore } from '../../../store/board/BoardStore';
 import { IBoard } from '../../../CommonTypes';
+import { IModuleContextWithDIValue } from '../../../packages/react-module-di/types/TModuleContextWithDI';
+import { DependencyContainer } from '../../../packages/react-module-di';
 
-export type TMainBoardContext = {
-    board: IBoardStore;
+export type TMainBoardContextValue = IModuleContextWithDIValue & {
     boardId: IBoard['id'];
 }
 
-const BoardMainContext = createContext<TMainBoardContext>({
-    board: {} as IBoardStore,
-    boardId: 0
+const BoardMainContext = createContext<TMainBoardContextValue>({
+    boardId: 0,
+    diContainer: {} as DependencyContainer
 });
 
 export default BoardMainContext;

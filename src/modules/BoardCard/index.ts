@@ -1,9 +1,7 @@
-import BoardCardShort from './components/BoardCardShort/BoardCardShort';
-import BoardCardModal from './components/BoardCardModal/BoardCardModal';
-import BoardCardProvider from './components/BoardCardProvider/BoardCardProvider';
+import BoardCardShort from '../Board/components/BoardCardShort/BoardCardShort';
+import BoardCardModal from '../Board/components/BoardCardModal/BoardCardModal';
 
 export {
     BoardCardShort,
-    BoardCardModal,
-    BoardCardProvider
+    BoardCardModal
 }

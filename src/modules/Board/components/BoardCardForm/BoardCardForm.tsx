@@ -2,13 +2,12 @@ import { FC } from 'react';
 import { useFormik } from 'formik';
 import classes from './BoardCardForm.module.scss';
 import { Form, Input } from '../../../../UI';
-import { ICard } from '../../../../CommonTypes';
+import type { TPartialCard } from '../../../../CommonTypes';
 
 const { TextArea } = Input;
 
-export type TCardData = Partial<ICard>;
 type TCardFormProps = {
-    formik: ReturnType<typeof useFormik<TCardData>>;
+    formik: ReturnType<typeof useFormik<TPartialCard>>;
 }
 
 const BoardCardForm: FC<TCardFormProps> = ({ formik }) => {

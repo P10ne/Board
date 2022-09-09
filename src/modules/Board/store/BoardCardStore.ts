@@ -1,61 +1,48 @@
-import {
-    isColumn,
-    isDraftCard,
-    TPartialDraftCard
-} from '../../CommonTypes';
-import type { ICard, IDraftCard } from '../../CommonTypes';
-import CrudStatus from '../CrudStatus';
+import { isCard } from '../../../CommonTypes';
+import type { TPartialCard } from '../../../CommonTypes';
+import type { ICard } from '../../../CommonTypes';
+import CrudStatus from '../../../store/CrudStatus';
 import { flow, makeObservable, observable } from 'mobx';
-import BoardCardApi from '../../api/api/BoardCardApi';
-import { IBoardCardsListStore } from './BoardCardsListStore';
+import type { IBoardCardsListStore } from './BoardCardsListStore';
+import { inject, injectable } from '../../../packages/react-module-di';
+import BOARD_DI_TOKENS from '../BOARD_DI_TOKENS';
+import type { IBoardCardApi } from '../api/BoardCardApi';
 
 export interface IBoardCardStore {
-    attributes: ICard | IDraftCard;
+    attributes: TPartialCard;
     crudStatus: CrudStatus;
+    boardCardsListStore: IBoardCardsListStore | null;
     update: (card: ICard) => void;
     delete: () => void;
     createFromDraft: () => void;
-    updateDraftAttributes: (data: IDraftCard) => void;
+    updateDraftAttributes: (data: TPartialCard) => void;
 }
 
-const boardCardApi = new BoardCardApi();
-
+@injectable()
 class BoardCardStore implements IBoardCardStore {
-    @observable attributes: ICard | IDraftCard;
+    @observable attributes: TPartialCard;
     crudStatus = new CrudStatus();
-    private boardCardsListStore: IBoardCardsListStore;
+    boardCardsListStore: IBoardCardsListStore | null;
 
-    constructor(data: ICard | TPartialDraftCard | null, boardCardsListStore: IBoardCardsListStore) {
+    constructor(
+        @inject(BOARD_DI_TOKENS.CardApi) private boardCardApi: IBoardCardApi
+    ) {
         makeObservable(this);
-        this.boardCardsListStore = boardCardsListStore;
-        this.attributes = this.getDraftCardAttributes(data);
-    }
-
-    private getDraftCardAttributes(data: ICard | TPartialDraftCard | null): ICard | IDraftCard {
-        const column = this.boardCardsListStore.columnStore.attributes;
-        if (isColumn(column)) {
-            const defaultCardAttributes: IDraftCard = {
-                name: '',
-                body: '',
-                columnId: column.id
-            };
-            return { ...defaultCardAttributes, ...data };
-        } else {
-            throw new Error('Column must not be draft');
-        }
+        this.attributes = {};
+        this.boardCardsListStore = null;
     }
 
     private async updateOnServer(data: ICard): Promise<ICard> {
-        return await boardCardApi.update(data);
+        return await this.boardCardApi.update(data);
     }
 
-    private async createOnServer(data: IDraftCard): Promise<ICard> {
-        return await boardCardApi.create(data);
+    private async createOnServer(data: TPartialCard): Promise<ICard> {
+        return await this.boardCardApi.create(data);
     }
 
-    updateDraftAttributes(data: IDraftCard) {
-        if (isDraftCard(this.attributes)) {
-            this.attributes = data;
+    updateDraftAttributes(data: TPartialCard) {
+        if (!isCard(this.attributes)) {
+            this.attributes = { ...{ columnId: this.boardCardsListStore?.columnStore?.attributes.id }, ...this.attributes, ...data };
         } else {
             throw new Error('You can only change attributes of a draft card');
         }
@@ -64,7 +51,7 @@ class BoardCardStore implements IBoardCardStore {
     @flow
     * createFromDraft() {
         const card = this.attributes;
-        if (isDraftCard(card)) {
+        if (!isCard(card)) {
             try {
                 this.crudStatus.creating.isFetching = true;
                 const createdCard: Awaited<ReturnType<InstanceType<typeof BoardCardStore>['createOnServer']>> = yield this.createOnServer(card);
@@ -95,12 +82,15 @@ class BoardCardStore implements IBoardCardStore {
 
     private async deleteFromServerOrResolve(): Promise<void> {
         const card = this.attributes;
-        if (isDraftCard(card)) return;
-        await boardCardApi.delete(card);
+        if (!isCard(card)) return;
+        await this.boardCardApi.delete(card.id);
     }
 
     @flow
     * delete() {
+        if (!this.boardCardsListStore) {
+            throw new Error('BoardCardsListStore is null');
+        }
         try {
             this.crudStatus.deleting.isFetching = true;
             yield this.deleteFromServerOrResolve();

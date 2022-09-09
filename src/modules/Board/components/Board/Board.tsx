@@ -5,11 +5,14 @@ import { MoveCardContext, TMoveCardContext } from '../../../DragAndDrop/contexts
 import BoardMainContext from '../../contexts/BoardMainContext';
 import BoardColumns from '../BoardColumns/BoardColumns';
 import { useContextSelector } from '../../../../shared';
+import useBoardStore from '../../hooks/useBoardStore';
+import useBoardContext from '../../hooks/useBoardContext';
 
 type TBoardProps = {}
 
 const Board: FC<TBoardProps> = () => {
-    const { board, boardId } = useContextSelector(BoardMainContext, v => v);
+    const boardId = useBoardContext(v => v.boardId);
+    const board = useBoardStore(v => v);
 
     useEffect(() => {
         board.fetch(boardId);

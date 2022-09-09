@@ -1,7 +1,6 @@
 import BaseApi from '../BaseApi';
 import { API_PATH } from '../constants';
-import { IBoard, IColumn, IDraftColumn } from '../../CommonTypes';
-import { IBoardStore } from '../../store/board/BoardStore';
+import { IBoard, IColumn, TPartialColumn } from '../../CommonTypes';
 
 class BoardColumnApi extends BaseApi {
     constructor() {
@@ -22,9 +21,9 @@ class BoardColumnApi extends BaseApi {
     //     return Promise.resolve();
     // }
 
-    async create(data: IDraftColumn): Promise<IColumn> {
+    async create(data: TPartialColumn): Promise<IColumn> {
         try {
-            const response = await this.fetcher.post<IColumn, IDraftColumn>('/', data);
+            const response = await this.fetcher.post<IColumn, TPartialColumn>('/', data);
             return response.data;
         } catch (e) {
             throw e;

@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Card } from '../../../../UI';
-import { IBoardCardStore } from '../../../../store/board/BoardCardStore';
+import { IBoardCardStore } from '../../store/BoardCardStore';
 
 type BoardCardProps = {
     card: IBoardCardStore;
@@ -12,7 +12,7 @@ const BoardCardShort: FC<BoardCardProps> = ({ card }) => {
         <Card
             size='small'
         >
-            {card.attributes!.name}
+            {card.attributes.name}
         </Card>
     )
 }

@@ -1,6 +1,7 @@
 import { container, DependencyContainer } from '../DIContainer';
 import registerDependencies, { TDependenciesConfig, TRegisterOptions } from './registerDependencies';
 import { IModuleDIProp } from '../types/IModuleProviderBaseProps';
+import GLOBAL_DI_TOKENS from '../GLOBAL_DI_TOKENS';
 
 type TArguments = {
     moduleDIConfig?: IModuleDIProp;
@@ -17,6 +18,7 @@ const createModuleDIContainer: (data: TArguments) => DependencyContainer = (data
     if (defaultConfig) {
         registerDependencies(moduleContainer, defaultConfig, options);
     }
+    moduleContainer.register(GLOBAL_DI_TOKENS.DIContainer, { useValue: moduleContainer });
     return moduleContainer;
 }
 

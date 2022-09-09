@@ -6,14 +6,8 @@ export interface IColumn {
     boardId: IBoard['id'];
 }
 
-export function isColumn(column: IColumn | IDraftColumn): column is IColumn {
-    return 'id' in column;
+export function isColumn(column: TPartialColumn): column is IColumn {
+    return !!column && 'id' in column;
 }
 
-export function isDraftColumn(column: IColumn | IDraftColumn): column is IDraftColumn {
-    return !('id' in column);
-}
-
-export interface IDraftColumn extends Omit<IColumn, 'id'> {}
-
-export type TPartialDraftColumn = Partial<IDraftColumn>;
+export type TPartialColumn = Partial<IColumn>;

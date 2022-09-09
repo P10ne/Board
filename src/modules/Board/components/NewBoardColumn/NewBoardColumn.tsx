@@ -6,19 +6,20 @@ import { Button, Typography } from '../../../../UI';
 import { PlusOutlined } from '../../../../icons';
 import { IBoard } from '../../../../CommonTypes';
 import { useContextSelector } from '../../../../shared';
+import useBoardStore from '../../hooks/useBoardStore';
 
 const { Paragraph } = Typography;
 
 type TNewColumnProps = {}
 
 const NewBoardColumn: FC<TNewColumnProps> = () => {
-    const boardColumns = useContextSelector(BoardMainContext, v => v.board?.columnsList);
+    const columnsList = useBoardStore(v => v.columnsList);
     const [isEditing, setIsEditing] = useState(false);
 
     const createColumn = async (name: string) => {
         setIsEditing(false);
         if (!name) return;
-        const draftColumn = boardColumns?.addDraftColumn({ name });
+        const draftColumn = columnsList.addDraftColumn({ name });
         draftColumn?.createFromDraft();
     }
 

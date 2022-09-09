@@ -1,38 +1,29 @@
 import 'reflect-metadata';
 import 'antd/dist/antd.min.css';
-import React, { createContext } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import rootStore, { IRootStore } from './store';
 import { AuthProvider } from './modules/Auth';
 import { TAuthProviderProps } from './modules/Auth/components/AuthProvider/AuthProvider';
-import AUTH_DI_TOKENS from './modules/Auth/AUTH_DI_TOKENS';
-import AuthApi from './api/api/AuthApi';
-import AuthStore from './modules/Auth/store/AuthStore';
-import { autorun, reaction } from 'mobx';
-import authApi from './api/api/AuthApi';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-export const StoreContext = createContext<IRootStore>(rootStore);
 const authProviderProps: Omit<TAuthProviderProps, 'children'> = {
 
 }
 
 root.render(
-    <StoreContext.Provider value={rootStore}>
-        <AuthProvider { ...authProviderProps }>
-            <DndProvider backend={HTML5Backend}>
-                <App />
-            </DndProvider>
-        </AuthProvider>
-    </StoreContext.Provider>
+    <AuthProvider { ...authProviderProps }>
+        <DndProvider backend={HTML5Backend}>
+            <App />
+        </DndProvider>
+    </AuthProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
